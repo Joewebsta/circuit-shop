@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
+import productData from '../mockData/data'
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 const Header = () => {
@@ -16,23 +17,33 @@ const Header = () => {
   );
 }
 
-const Cart = () => {
+const Cart = ({ products }) => {
   return (
     <main>
-      <ProductListing />
+      <ProductListing products={products} />
       <AddForm />
     </main>
   )
 }
 
-const ProductListing = () => {
+const ProductListing = ({ products }) => {
+  const productList = () => {
+    return products.map((product) => {
+      const { id, title, quantity, price } = product;
+      return <Product key={id} productName={title} price={price} quantityInStock={quantity} />
+    })
+  }
+
+  // const productList = products.map((product) => {
+  //   const { id, title, quantity, price } = product;
+  //   return <Product productName={title} price={price} quantityInStock={quantity} />
+  // })
+
   return (
     <div className="product-listing">
       <h2>Products</h2>
-      <ul class="product-details">
-        <Product productName="Amazon Kindle E-reader" price="$79.99" quantityInStock={5} />
-        <Product productName="Amazon Kindle E-reader" price="$79.99" quantityInStock={5} />
-        <Product productName="Amazon Kindle E-reader" price="$79.99" quantityInStock={5} />
+      <ul className="product-details">
+        {productList()}
       </ul>
     </div>
   )
@@ -54,9 +65,9 @@ const Product = ({ productName, price, quantityInStock }) => {
 
 const Actions = () => {
   return (
-    <div class="actions product-actions">
-      <button class="add-to-cart">Add to Cart</button>
-      <button class="edit">Edit</button>
+    <div className="actions product-actions">
+      <button className="add-to-cart">Add to Cart</button>
+      <button className="edit">Edit</button>
     </div>
   )
 }
@@ -107,10 +118,12 @@ const AddForm = () => {
 }
 
 const App = () => {
+  const [products, setProducts] = useState(productData);
+
   return (
     <div id="app">
       <Header />
-      <Cart />
+      <Cart products={products} />
     </div>
   );
 }
