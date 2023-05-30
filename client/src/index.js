@@ -1,3 +1,6 @@
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 const Actions = () => {
@@ -29,33 +32,38 @@ const ProductListing = () => {
 }
 
 const Cart = () => {
-  return React.createElement("main", null, 
-    ProductListing(),
-  );
+  return(
+    <main>
+	  <ProductListing />
+	</main>
+  )
 }
 
 const Header = () => {
-  return React.createElement("header", null,
-    React.createElement("h1", null, "The Shop!"),
-    React.createElement("div", {
-      className: "cart",
-      children: [
-        React.createElement("h2", null, "Your Cart"),
-        React.createElement("p", null, "Your cart is empty"),
-        React.createElement("p", null, "Total: $0"),
-        React.createElement("button", {
-          className: "checkout",
-          disabled: true
-        }, "Checkout"),
-      ]
-    },
-    ),
+  return(
+    <header>
+	  <h1>The Shop!</h1>
+	  <div className="cart">
+        <h2>Your Cart</h2>
+		<p>Your cart is empty</p>
+		<p>Total: $0</p>
+		<button className="checkout" disabled>Checkout</button>
+	  </div>	 
+	</header>
   );
 }
 
 
 const App = () => {
-  return React.createElement("div", { id: "app" }, Header(), Cart());
+  //return React.createElement("div", { id: "app" }, Header(), Cart());
+  return (
+    <div>
+	  <Header />
+	  <Cart />
+	</div>
+  );
 }
 
-root.render(App());
+root.render(
+  <App />
+);
