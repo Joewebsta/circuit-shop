@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
-import productData from '../mockData/data'
+import axios from 'axios'
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 const Header = () => {
@@ -17,7 +17,7 @@ const Header = () => {
   );
 }
 
-const Cart = ({ products }) => {
+const Products = ({ products }) => {
   return (
     <main>
       <ProductListing products={products} />
@@ -118,12 +118,23 @@ const AddForm = () => {
 }
 
 const App = () => {
-  const [products, setProducts] = useState(productData);
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const getAllProducts = async () => {
+      const response = await axios.get('/api/products')
+      const products = await response.data;
+      setProducts(products);
+    }
+
+    getAllProducts();
+  }, []);
+
 
   return (
     <div id="app">
       <Header />
-      <Cart products={products} />
+      <Products products={products} />
     </div>
   );
 }
