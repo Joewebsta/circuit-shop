@@ -17,11 +17,11 @@ const Header = () => {
   );
 }
 
-const Products = ({ products }) => {
+const Products = ({ products, onDisplayNewProductForm, isAddFormVisible }) => {
   return (
     <main>
       <ProductListing products={products} />
-      <AddForm />
+      <AddForm onDisplayNewProductForm={onDisplayNewProductForm} isAddFormVisible={isAddFormVisible} />
     </main>
   )
 }
@@ -29,15 +29,10 @@ const Products = ({ products }) => {
 const ProductListing = ({ products }) => {
   const productList = () => {
     return products.map((product) => {
-      const { id, title, quantity, price } = product;
+      const { _id: id, title, quantity, price } = product;
       return <Product key={id} productName={title} price={price} quantityInStock={quantity} />
     })
   }
-
-  // const productList = products.map((product) => {
-  //   const { id, title, quantity, price } = product;
-  //   return <Product productName={title} price={price} quantityInStock={quantity} />
-  // })
 
   return (
     <div className="product-listing">
@@ -72,10 +67,10 @@ const Actions = () => {
   )
 }
 
-const AddForm = () => {
+const AddForm = ({ onDisplayNewProductForm, isAddFormVisible }) => {
   return (
-    <div className="add-form">
-      <p><button className="add-product-button">Add A Product</button></p>
+    <div className={`add-form ${isAddFormVisible && "visible"}`}>
+      <p><button className="add-product-button" onClick={onDisplayNewProductForm}>Add A Product</button></p>
       <h3>Add Product</h3>
       <form>
         <div className="input-group">
@@ -119,6 +114,7 @@ const AddForm = () => {
 
 const App = () => {
   const [products, setProducts] = useState([]);
+  const [isAddFormVisible, setIsAddFormVisible] = useState(false);
 
   useEffect(() => {
     const getAllProducts = async () => {
@@ -130,11 +126,18 @@ const App = () => {
     getAllProducts();
   }, []);
 
+  const handleDisplayNewProductForm = (e) => {
+    setIsAddFormVisible(!isAddFormVisible);
+  }
 
   return (
     <div id="app">
       <Header />
-      <Products products={products} />
+      <Products
+        products={products}
+        onDisplayNewProductForm={handleDisplayNewProductForm}
+        isAddFormVisible={isAddFormVisible}
+      />
     </div>
   );
 }
