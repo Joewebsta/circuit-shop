@@ -17,20 +17,20 @@ const Header = () => {
   );
 }
 
-const Products = ({ products, onDisplayNewProductForm, onHideNewProductForm, isAddFormVisible, onAddNewProduct }) => {
+const Products = ({ products, onDisplayNewProductForm, onHideNewProductForm, isAddFormVisible, onAddNewProduct, onDeleteProduct }) => {
   return (
     <main>
-      <ProductListing products={products} />
+      <ProductListing products={products} onDeleteProduct={onDeleteProduct} />
       <AddForm onDisplayNewProductForm={onDisplayNewProductForm} isAddFormVisible={isAddFormVisible} onHideNewProductForm={onHideNewProductForm} onAddNewProduct={onAddNewProduct} />
     </main>
   )
 }
 
-const ProductListing = ({ products }) => {
+const ProductListing = ({ products, onDeleteProduct }) => {
   const productList = () => {
     return products.map((product) => {
       const { _id: id, title, quantity, price } = product;
-      return <Product key={id} productName={title} price={price} quantityInStock={quantity} />
+      return <Product key={id} productId={id} productName={title} price={price} quantityInStock={quantity} onDeleteProduct={onDeleteProduct} />
     })
   }
 
@@ -44,7 +44,13 @@ const ProductListing = ({ products }) => {
   )
 }
 
-const Product = ({ productName, price, quantityInStock }) => {
+const Product = ({ productId, productName, price, quantityInStock, onDeleteProduct }) => {
+
+  const handleDeleteButtonClick = (event) => {
+    event.preventDefault();
+	onDeleteProduct(productId);
+  } 
+
   return (
     <li className="product">
       <div className="product-details">
@@ -52,7 +58,7 @@ const Product = ({ productName, price, quantityInStock }) => {
         <p className="price">{price}</p>
         <p className="quantity">{quantityInStock} left in stock</p>
         <Actions />
-        <button className="delete-button"><span>X</span></button>
+        <button className="delete-button" onClick={handleDeleteButtonClick} ><span>X</span></button>
       </div>
     </li>
   )
@@ -86,8 +92,7 @@ const AddForm = ({ onDisplayNewProductForm, onHideNewProductForm, isAddFormVisib
   
   const submitForm = (event) => {
     event.preventDefault();
-	onAddNewProduct(productName, productPrice, productQuantity);
-	clearProductForm();
+	onAddNewProduct(productName, productPrice, productQuantity, clearProductForm);
   } 
   
   const clearProductForm = (event) => {
@@ -160,11 +165,18 @@ const App = () => {
     getAllProducts();
   }, []);
 
-  const handleAddNewProduct = async (name, price, quantity) => {
+  const handleAddNewProduct = async (name, price, quantity, clearProductForm) => {
 	const obj = {title: name, price: parseInt(price, 10), quantity: parseInt(quantity, 10) };
     const response = await axios.post('/api/products', obj);
 	const newProduct = await response.data;
 	const updatedProducts = products.concat(newProduct);
+	setProducts(updatedProducts);
+	clearProductForm();
+  }
+  
+  const handleDeleteProduct = async (productId) => {
+    const response = await axios.delete(`/api/products/${productId}`);
+	const updatedProducts = products.filter(product => product._id != productId);
 	setProducts(updatedProducts);
   }
 
@@ -173,7 +185,6 @@ const App = () => {
   }
 
   const handleHideNewProductForm = (e) => {
-	console.log("hiding");
     setIsAddFormVisible(false);
   }
 
@@ -186,6 +197,7 @@ const App = () => {
         isAddFormVisible={isAddFormVisible}
 		onHideNewProductForm = {handleHideNewProductForm}
 		onAddNewProduct = {handleAddNewProduct}
+		onDeleteProduct = {handleDeleteProduct}
       />
     </div>
   );
