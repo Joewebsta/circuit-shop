@@ -18,10 +18,9 @@ const Header = () => {
 }
 
 const Products = (props) => {
-
   return (
     <main>
-      <ProductListing products={props.products} onDeleteProduct={props.onDeleteProduct} onEditProduct={props.onEditProduct} />
+      <ProductListing {...props} />
       <AddForm
         onDisplayNewProductForm={props.onDisplayNewProductForm}
         isAddFormVisible={props.isAddFormVisible}
@@ -32,7 +31,7 @@ const Products = (props) => {
   )
 }
 
-const ProductListing = ({ products, onDeleteProduct, onEditProduct }) => {
+const ProductListing = ({ products, onDeleteProduct, onEditProduct, isUpdateFormVisible, onHideEditProductForm, onUpdateProduct }) => {
   const productList = () => {
     return products.map((product) => {
       const { _id: id, title, quantity, price } = product;
@@ -45,6 +44,9 @@ const ProductListing = ({ products, onDeleteProduct, onEditProduct }) => {
           quantityInStock={quantity}
           onDeleteProduct={onDeleteProduct}
           onEditProduct={onEditProduct}
+          onUpdateProduct={onUpdateProduct}
+          isUpdateFormVisible={isUpdateFormVisible}
+          onHideEditProductForm={onHideEditProductForm}
         />
       )
     })
@@ -60,10 +62,23 @@ const ProductListing = ({ products, onDeleteProduct, onEditProduct }) => {
   )
 }
 
-const Product = ({ productId, productTitle, price, quantityInStock, onDeleteProduct, onEditProduct }) => {
+const Product = ({ productId, productTitle, price, quantityInStock, onDeleteProduct, onEditProduct, isUpdateFormVisible, onHideEditProductForm, onUpdateProduct }) => {
   const handleDeleteButtonClick = (event) => {
     event.preventDefault();
     onDeleteProduct(productId);
+  }
+
+  const displayEditForm = () => {
+    return isUpdateFormVisible ?
+      < ProductUpdateForm
+        onHideEditProductForm={onHideEditProductForm}
+        productTitle={productTitle}
+        price={price}
+        quantityInStock={quantityInStock}
+        onUpdateProduct={onUpdateProduct}
+        productId={productId}
+      />
+      : null
   }
 
   return (
@@ -72,18 +87,99 @@ const Product = ({ productId, productTitle, price, quantityInStock, onDeleteProd
         <h3>{productTitle}</h3>
         <p className="price">{price}</p>
         <p className="quantity">{quantityInStock} left in stock</p>
-        <Actions productId={productId} onEditProduct={onEditProduct} />
+        <Actions productId={productId} onEditProduct={onEditProduct} isUpdateFormVisible={isUpdateFormVisible} />
         <button className="delete-button" onClick={handleDeleteButtonClick} ><span>X</span></button>
       </div>
+      {displayEditForm()}
     </li>
   )
 }
 
-const Actions = ({ productId, onEditProduct }) => {
+const Actions = ({ productId, onEditProduct, isUpdateFormVisible }) => {
+  const displayEditButton = () => {
+    return isUpdateFormVisible ?
+      null :
+      <button className="edit" onClick={() => { onEditProduct(productId) }}>Edit</button>
+  }
+
   return (
     <div className="actions product-actions">
       <button className="add-to-cart">Add to Cart</button>
-      <button className="edit" onClick={() => { onEditProduct(productId) }}>Edit</button>
+      {displayEditButton()}
+    </div>
+  )
+}
+
+const ProductUpdateForm = ({ productId, onHideEditProductForm, productTitle, price, quantityInStock, onUpdateProduct }) => {
+  const [newTitle, setNewTitle] = useState(productTitle);
+  const [newPrice, setNewPrice] = useState(price);
+  const [newQuantity, setNewQuantity] = useState(quantityInStock);
+
+  const handleNewTitleChange = (event) => {
+    setNewTitle(event.target.value);
+  }
+
+  const handleNewPriceChange = (event) => {
+    setNewPrice(event.target.value);
+  }
+
+  const handleNewQuantityChange = (event) => {
+    setNewQuantity(event.target.value);
+  }
+
+  const handleUpdateButtonClick = (e) => {
+    e.preventDefault();
+    onUpdateProduct(productId, newTitle, newPrice, newQuantity, clearProductUpdateForm);
+  }
+
+  const clearProductUpdateForm = () => {
+    setNewTitle("");
+    setNewPrice("");
+    setNewQuantity("");
+  }
+
+  return (
+    <div className="edit-form">
+      <h3>Edit Product</h3>
+      <form>
+        <div className="input-group">
+          <label htmlFor="product-name">Product Name</label>
+          <input
+            type="text"
+            id="product-name"
+            value={newTitle}
+            aria-label="Product Name"
+            onChange={handleNewTitleChange}
+          />
+        </div>
+
+        <div className="input-group">
+          <label htmlFor="product-price">Price</label>
+          <input
+            type="number"
+            id="product-price"
+            value={newPrice}
+            aria-label="Product Price"
+            onChange={handleNewPriceChange}
+          />
+        </div>
+
+        <div className="input-group">
+          <label htmlFor="product-quantity">Quantity</label>
+          <input
+            type="number"
+            id="product-quantity"
+            value={newQuantity}
+            aria-label="Product Quantity"
+            onChange={handleNewQuantityChange}
+          />
+        </div>
+
+        <div className="actions form-actions">
+          <button type="submit" onClick={handleUpdateButtonClick}>Update</button>
+          <button type="button" onClick={onHideEditProductForm}>Cancel</button>
+        </div>
+      </form>
     </div>
   )
 }
@@ -169,6 +265,7 @@ const AddForm = ({ onDisplayNewProductForm, onHideNewProductForm, isAddFormVisib
 const App = () => {
   const [products, setProducts] = useState([]);
   const [isAddFormVisible, setIsAddFormVisible] = useState(false);
+  const [isUpdateFormVisible, setIsUpdateFormVisible] = useState(false);
 
   useEffect(() => {
     const getAllProducts = async () => {
@@ -189,18 +286,21 @@ const App = () => {
     clearProductForm();
   }
 
-  const handleEditProduct = async (productId) => {
-    console.log(productId);
+  const handleEditProduct = async () => {
+    setIsUpdateFormVisible(true);
+  }
 
-    // const response = await axios.put(`/api/products${productId}`);
-    // const editedProduct = response.data;
-    // setProducts(products.map(product => {
-    //   return product.id === productId ? editedProduct : product;
-    // }));
+  const handleUpdateProduct = async (productId, newTitle, newPrice, newQuantity, callback) => {
+    const updatedProduct = { title: newTitle, price: newPrice, quantity: newQuantity }
+    const response = await axios.put(`/api/products/${productId}`, updatedProduct);
+    const editedProduct = response.data;
+    setProducts(products.map(product => product._id === productId ? editedProduct : product));
+    setIsUpdateFormVisible(false);
+    callback();
   }
 
   const handleDeleteProduct = async (productId) => {
-    const response = await axios.delete(`/api/products/${productId}`);
+    await axios.delete(`/api/products/${productId}`);
     const updatedProducts = products.filter(product => product._id !== productId);
     setProducts(updatedProducts);
   }
@@ -213,6 +313,10 @@ const App = () => {
     setIsAddFormVisible(false);
   }
 
+  const handleHideEditProductForm = e => {
+    setIsUpdateFormVisible(false)
+  }
+
   return (
     <div id="app">
       <Header />
@@ -220,7 +324,10 @@ const App = () => {
         products={products}
         onDisplayNewProductForm={handleDisplayNewProductForm}
         isAddFormVisible={isAddFormVisible}
+        isUpdateFormVisible={isUpdateFormVisible}
         onHideNewProductForm={handleHideNewProductForm}
+        onHideEditProductForm={handleHideEditProductForm}
+        onUpdateProduct={handleUpdateProduct}
         onAddNewProduct={handleAddNewProduct}
         onDeleteProduct={handleDeleteProduct}
         onEditProduct={handleEditProduct}
