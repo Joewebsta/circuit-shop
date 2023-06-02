@@ -365,6 +365,24 @@ const App = () => {
 
   const handleAddProductToCart = async (productId) => {
     const response = await axios.post('/api/add-to-cart', { productId });
+    const updatedProducts = products.map(product => {
+      if (product._id === productId) {
+        return response.data.product;
+      } 
+      else {
+        return product;
+      }
+    });
+    const updatedCartItems = cartItems.map(cartItem => {
+      if (cartItem.productId === productId) {
+        return response.data.item;
+      }
+      else {
+        return cartItem;
+      }
+    });
+    setProducts(updatedProducts);
+    setCartItems(updatedCartItems);  
   }
 
 
