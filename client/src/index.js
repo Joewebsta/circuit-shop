@@ -31,14 +31,14 @@ const Products = (props) => {
   )
 }
 
-const ProductListing = ({ products, onDeleteProduct, onEditProduct, isUpdateFormVisible, onHideEditProductForm, onUpdateProduct }) => {
+const ProductListing = ({ products, onDeleteProduct, onEditProduct, isUpdateFormVisible, onUpdateProduct }) => {
   const productList = () => {
     return products.map((product) => {
-      const { _id: id, title, quantity, price } = product;
+      const { _id, title, quantity, price } = product;
       return (
         <Product
-          key={id}
-          productId={id}
+          key={_id}
+          productId={_id}
           productTitle={title}
           price={price}
           quantityInStock={quantity}
@@ -46,7 +46,6 @@ const ProductListing = ({ products, onDeleteProduct, onEditProduct, isUpdateForm
           onEditProduct={onEditProduct}
           onUpdateProduct={onUpdateProduct}
           isUpdateFormVisible={isUpdateFormVisible}
-          onHideEditProductForm={onHideEditProductForm}
         />
       )
     })
@@ -62,21 +61,36 @@ const ProductListing = ({ products, onDeleteProduct, onEditProduct, isUpdateForm
   )
 }
 
-const Product = ({ productId, productTitle, price, quantityInStock, onDeleteProduct, onEditProduct, isUpdateFormVisible, onHideEditProductForm, onUpdateProduct }) => {
+const Product = ({ productId, productTitle, price, quantityInStock, onDeleteProduct, onUpdateProduct }) => {
+  const [isUpdateFormVisible, setIsUpdateFormVisible] = useState(false);
+
   const handleDeleteButtonClick = (event) => {
     event.preventDefault();
     onDeleteProduct(productId);
   }
 
+  const handleEditButtonClick = () => {
+    setIsUpdateFormVisible(true);
+  }
+
+  const handleCancelButtonClick = () => {
+    hideProductUpdateForm();
+  }
+
+  const hideProductUpdateForm = () => {
+    setIsUpdateFormVisible(false);
+  }
+
   const displayEditForm = () => {
     return isUpdateFormVisible ?
       < ProductUpdateForm
-        onHideEditProductForm={onHideEditProductForm}
         productTitle={productTitle}
         price={price}
         quantityInStock={quantityInStock}
         onUpdateProduct={onUpdateProduct}
         productId={productId}
+        onHandleCancelButtonClick={handleCancelButtonClick}
+        hideProductUpdateForm={hideProductUpdateForm}
       />
       : null
   }
@@ -87,7 +101,7 @@ const Product = ({ productId, productTitle, price, quantityInStock, onDeleteProd
         <h3>{productTitle}</h3>
         <p className="price">{price}</p>
         <p className="quantity">{quantityInStock} left in stock</p>
-        <Actions productId={productId} onEditProduct={onEditProduct} isUpdateFormVisible={isUpdateFormVisible} />
+        <Actions onEditButtonClick={handleEditButtonClick} isUpdateFormVisible={isUpdateFormVisible} />
         <button className="delete-button" onClick={handleDeleteButtonClick} ><span>X</span></button>
       </div>
       {displayEditForm()}
@@ -95,11 +109,11 @@ const Product = ({ productId, productTitle, price, quantityInStock, onDeleteProd
   )
 }
 
-const Actions = ({ productId, onEditProduct, isUpdateFormVisible }) => {
+const Actions = ({ onEditButtonClick, isUpdateFormVisible }) => {
   const displayEditButton = () => {
     return isUpdateFormVisible ?
       null :
-      <button className="edit" onClick={() => { onEditProduct(productId) }}>Edit</button>
+      <button className="edit" onClick={onEditButtonClick}>Edit</button>
   }
 
   return (
@@ -110,7 +124,7 @@ const Actions = ({ productId, onEditProduct, isUpdateFormVisible }) => {
   )
 }
 
-const ProductUpdateForm = ({ productId, onHideEditProductForm, productTitle, price, quantityInStock, onUpdateProduct }) => {
+const ProductUpdateForm = ({ productId, productTitle, price, quantityInStock, onUpdateProduct, onHandleCancelButtonClick, hideProductUpdateForm }) => {
   const [newTitle, setNewTitle] = useState(productTitle);
   const [newPrice, setNewPrice] = useState(price);
   const [newQuantity, setNewQuantity] = useState(quantityInStock);
@@ -129,10 +143,11 @@ const ProductUpdateForm = ({ productId, onHideEditProductForm, productTitle, pri
 
   const handleUpdateButtonClick = (e) => {
     e.preventDefault();
-    onUpdateProduct(productId, newTitle, newPrice, newQuantity, clearProductUpdateForm);
+    onUpdateProduct(productId, newTitle, newPrice, newQuantity, resetProductUpdateForm);
+    hideProductUpdateForm();
   }
 
-  const clearProductUpdateForm = () => {
+  const resetProductUpdateForm = () => {
     setNewTitle("");
     setNewPrice("");
     setNewQuantity("");
@@ -177,7 +192,7 @@ const ProductUpdateForm = ({ productId, onHideEditProductForm, productTitle, pri
 
         <div className="actions form-actions">
           <button type="submit" onClick={handleUpdateButtonClick}>Update</button>
-          <button type="button" onClick={onHideEditProductForm}>Cancel</button>
+          <button type="button" onClick={onHandleCancelButtonClick}>Cancel</button>
         </div>
       </form>
     </div>
@@ -206,7 +221,7 @@ const AddForm = ({ onDisplayNewProductForm, onHideNewProductForm, isAddFormVisib
     onAddNewProduct(productTitle, productPrice, productQuantity, clearProductForm);
   }
 
-  const clearProductForm = (event) => {
+  const clearProductForm = () => {
     setProductName('');
     setProductPrice('');
     setProductQuantity('');
@@ -265,7 +280,6 @@ const AddForm = ({ onDisplayNewProductForm, onHideNewProductForm, isAddFormVisib
 const App = () => {
   const [products, setProducts] = useState([]);
   const [isAddFormVisible, setIsAddFormVisible] = useState(false);
-  const [isUpdateFormVisible, setIsUpdateFormVisible] = useState(false);
 
   useEffect(() => {
     const getAllProducts = async () => {
@@ -286,16 +300,11 @@ const App = () => {
     clearProductForm();
   }
 
-  const handleEditProduct = async () => {
-    setIsUpdateFormVisible(true);
-  }
-
   const handleUpdateProduct = async (productId, newTitle, newPrice, newQuantity, callback) => {
     const updatedProduct = { title: newTitle, price: newPrice, quantity: newQuantity }
     const response = await axios.put(`/api/products/${productId}`, updatedProduct);
     const editedProduct = response.data;
     setProducts(products.map(product => product._id === productId ? editedProduct : product));
-    setIsUpdateFormVisible(false);
     callback();
   }
 
@@ -313,10 +322,6 @@ const App = () => {
     setIsAddFormVisible(false);
   }
 
-  const handleHideEditProductForm = e => {
-    setIsUpdateFormVisible(false)
-  }
-
   return (
     <div id="app">
       <Header />
@@ -324,13 +329,10 @@ const App = () => {
         products={products}
         onDisplayNewProductForm={handleDisplayNewProductForm}
         isAddFormVisible={isAddFormVisible}
-        isUpdateFormVisible={isUpdateFormVisible}
         onHideNewProductForm={handleHideNewProductForm}
-        onHideEditProductForm={handleHideEditProductForm}
         onUpdateProduct={handleUpdateProduct}
         onAddNewProduct={handleAddNewProduct}
         onDeleteProduct={handleDeleteProduct}
-        onEditProduct={handleEditProduct}
       />
     </div>
   );
