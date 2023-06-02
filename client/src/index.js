@@ -3,18 +3,48 @@ import ReactDOM from 'react-dom/client';
 import axios from 'axios'
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
-const Header = () => {
+const Cart = ({ items }) => {
+
   return (
-    <header>
-      <h1>The Shop!</h1>
-      <div className="cart">
-        <h2>Your Cart</h2>
-        <p>Your cart is empty</p>
-        <p>Total: $0</p>
-        <button className="checkout" disabled>Checkout</button>
-      </div>
-    </header>
+    <div className="cart">
+      <h2>Your Cart</h2>
+      {items.length === 0 ? <p>"Your cart is empty"</p> : <CartItemListing items={items} />}
+      <button className="checkout" disabled>Checkout</button>
+    </div>
   );
+}
+
+const CartItemListing = ({ items }) => {
+  return (
+    <table className="cart-items">
+      <thead>
+        <tr>
+          <th scope="col">Item</th>
+          <th scope="col">Quantity</th>
+          <th scope="col">Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        {items.map(item => <CartItem key={item._id} item={item} />)}
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colSpan="3" className="total" >Total: ${items.reduce((sum, current) => sum + current.price, 0)}</td>
+        </tr>
+      </tfoot>
+    </table>
+  );
+}
+// 
+
+const CartItem = ({ item }) => {
+  return (
+    <tr>
+      <td>{item.title}</td>
+      <td>{item.quantity}</td>
+      <td>{item.price}</td>
+    </tr>
+  )
 }
 
 const Products = (props) => {
@@ -31,7 +61,7 @@ const Products = (props) => {
   )
 }
 
-const ProductListing = ({ products, onDeleteProduct, onEditProduct, isUpdateFormVisible, onUpdateProduct }) => {
+const ProductListing = ({ products, onDeleteProduct, onEditProduct, isUpdateFormVisible, onUpdateProduct, onAddProductToCart }) => {
   const productList = () => {
     return products.map((product) => {
       const { _id, title, quantity, price } = product;
@@ -45,6 +75,7 @@ const ProductListing = ({ products, onDeleteProduct, onEditProduct, isUpdateForm
           onDeleteProduct={onDeleteProduct}
           onEditProduct={onEditProduct}
           onUpdateProduct={onUpdateProduct}
+          onAddProductToCart={onAddProductToCart}
           isUpdateFormVisible={isUpdateFormVisible}
         />
       )
@@ -61,7 +92,7 @@ const ProductListing = ({ products, onDeleteProduct, onEditProduct, isUpdateForm
   )
 }
 
-const Product = ({ productId, productTitle, price, quantityInStock, onDeleteProduct, onUpdateProduct }) => {
+const Product = ({ productId, productTitle, price, quantityInStock, onDeleteProduct, onUpdateProduct, onAddProductToCart }) => {
   const [isUpdateFormVisible, setIsUpdateFormVisible] = useState(false);
 
   const handleDeleteButtonClick = (event) => {
@@ -101,7 +132,15 @@ const Product = ({ productId, productTitle, price, quantityInStock, onDeleteProd
         <h3>{productTitle}</h3>
         <p className="price">{price}</p>
         <p className="quantity">{quantityInStock} left in stock</p>
-        <Actions onEditButtonClick={handleEditButtonClick} isUpdateFormVisible={isUpdateFormVisible} />
+        <Actions
+          onEditButtonClick={handleEditButtonClick}
+          isUpdateFormVisible={isUpdateFormVisible}
+          onAddProductToCart={onAddProductToCart}
+          productId={productId}
+          productTitle={productTitle}
+          price={price}
+          quantityInStock={quantityInStock}
+        />
         <button className="delete-button" onClick={handleDeleteButtonClick} ><span>X</span></button>
       </div>
       {displayEditForm()}
@@ -109,7 +148,7 @@ const Product = ({ productId, productTitle, price, quantityInStock, onDeleteProd
   )
 }
 
-const Actions = ({ onEditButtonClick, isUpdateFormVisible }) => {
+const Actions = ({ onEditButtonClick, isUpdateFormVisible, onAddProductToCart, productId, productTitle, price, quantityInStock }) => {
   const displayEditButton = () => {
     return isUpdateFormVisible ?
       null :
@@ -118,7 +157,7 @@ const Actions = ({ onEditButtonClick, isUpdateFormVisible }) => {
 
   return (
     <div className="actions product-actions">
-      <button className="add-to-cart">Add to Cart</button>
+      <button className="add-to-cart" onClick={() => onAddProductToCart(productId, productTitle, price, quantityInStock)}>Add to Cart</button>
       {displayEditButton()}
     </div>
   )
@@ -278,6 +317,7 @@ const AddForm = ({ onDisplayNewProductForm, onHideNewProductForm, isAddFormVisib
 }
 
 const App = () => {
+  const [cartItems, setCartItems] = useState([]);
   const [products, setProducts] = useState([]);
   const [isAddFormVisible, setIsAddFormVisible] = useState(false);
 
@@ -291,6 +331,16 @@ const App = () => {
     getAllProducts();
   }, []);
 
+  useEffect(() => {
+    const getCartItems = async () => {
+      const response = await axios.get('/api/cart')
+      const cartItems = await response.data;
+      setCartItems(cartItems);
+    }
+
+    getCartItems();
+  }, []);
+
   const handleAddNewProduct = async (name, price, quantity, clearProductForm) => {
     const obj = { title: name, price: parseInt(price, 10), quantity: parseInt(quantity, 10) };
     const response = await axios.post('/api/products', obj);
@@ -302,9 +352,8 @@ const App = () => {
 
   const handleUpdateProduct = async (productId, newTitle, newPrice, newQuantity, callback) => {
     const updatedProduct = { title: newTitle, price: newPrice, quantity: newQuantity }
-    const response = await axios.put(`/api/products/${productId}`, updatedProduct);
-    const editedProduct = response.data;
-    setProducts(products.map(product => product._id === productId ? editedProduct : product));
+    setProducts(products.map(product => product._id === productId ? { ...product, title: newTitle, quantity: newQuantity, price: newPrice } : product));
+    axios.put(`/api/products/${productId}`, updatedProduct);
     callback();
   }
 
@@ -314,6 +363,29 @@ const App = () => {
     setProducts(updatedProducts);
   }
 
+  const handleAddProductToCart = async (productId) => {
+    const response = await axios.post('/api/add-to-cart', { productId });
+    const updatedProducts = products.map(product => {
+      if (product._id === productId) {
+        return response.data.product;
+      } 
+      else {
+        return product;
+      }
+    });
+    const updatedCartItems = cartItems.map(cartItem => {
+      if (cartItem.productId === productId) {
+        return response.data.item;
+      }
+      else {
+        return cartItem;
+      }
+    });
+    setProducts(updatedProducts);
+    setCartItems(updatedCartItems);  
+  }
+
+
   const handleDisplayNewProductForm = (e) => {
     setIsAddFormVisible(true);
   }
@@ -322,9 +394,14 @@ const App = () => {
     setIsAddFormVisible(false);
   }
 
+
+
   return (
     <div id="app">
-      <Header />
+      <header>
+        <h1>The Shop!</h1>
+        <Cart items={cartItems} />
+      </header>
       <Products
         products={products}
         onDisplayNewProductForm={handleDisplayNewProductForm}
@@ -333,6 +410,7 @@ const App = () => {
         onUpdateProduct={handleUpdateProduct}
         onAddNewProduct={handleAddNewProduct}
         onDeleteProduct={handleDeleteProduct}
+        onAddProductToCart={handleAddProductToCart}
       />
     </div>
   );
