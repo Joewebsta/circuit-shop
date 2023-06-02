@@ -3,18 +3,46 @@ import ReactDOM from 'react-dom/client';
 import axios from 'axios'
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
-const Header = () => {
+const Cart = ({ items }) => {
+	
   return (
-    <header>
-      <h1>The Shop!</h1>
-      <div className="cart">
-        <h2>Your Cart</h2>
-        <p>Your cart is empty</p>
-        <p>Total: $0</p>
-        <button className="checkout" disabled>Checkout</button>
-      </div>
-    </header>
+    <div className="cart">
+      <h2>Your Cart</h2>
+        {items.length === 0 ? <p>"Your cart is empty"</p> : <CartItemListing items={items} />}
+      <button className="checkout" disabled>Checkout</button>
+    </div>
   );
+}
+
+const CartItemListing = ({ items }) => {
+  return (
+    <table className="cart-items">
+	  <thead>
+	    <tr>
+          <th scope="col">Item</th>
+          <th scope="col">Quantity</th>
+          <th scope="col">Price</th>
+        </tr> 
+      </thead>
+	  <tbody>
+	    {items.map(item => <CartItem item={item} />)}
+	  </tbody>
+	  <tfoot>
+	    <td colspan="3" className="total" >Total: ${items.reduce((sum, current) => sum + current.price, 0)}</td>
+	  </tfoot>
+	</table>
+  );
+}
+// 
+
+const CartItem = ({ item }) => {
+  return (
+    <tr>
+      <td>{item.title}</td>
+      <td>{item.quantity}</td>
+      <td>{item.price}</td>
+	</tr>
+  )
 }
 
 const Products = (props) => {
@@ -278,6 +306,7 @@ const AddForm = ({ onDisplayNewProductForm, onHideNewProductForm, isAddFormVisib
 }
 
 const App = () => {
+  const [cartItems, setCartItems] = useState([]);
   const [products, setProducts] = useState([]);
   const [isAddFormVisible, setIsAddFormVisible] = useState(false);
 
@@ -289,6 +318,25 @@ const App = () => {
     }
 
     getAllProducts();
+  }, []);
+  
+  useEffect(() => {
+    const getCartItems = async () => {
+      const response = await axios.get('/api/cart')
+      const cartItems = await response.data;
+      //setCartItems(cartItems);
+	  setCartItems([{
+    "_id": "545454f72092473d55a809e1",
+    "title": "Kindle",
+    "price": 50,
+    "quantity": 1,
+    "productId": "61d754d72092473d55a809e1",
+    "createdAt": "2020-10-04T05:57:02.777Z",
+    "updatedAt": "2020-10-04T05:57:02.777Z",
+    "_v": 0
+  }]);
+    }
+    getCartItems();
   }, []);
 
   const handleAddNewProduct = async (name, price, quantity, clearProductForm) => {
@@ -324,7 +372,10 @@ const App = () => {
 
   return (
     <div id="app">
-      <Header />
+      <header>
+        <h1>The Shop!</h1>
+	    <Cart items={cartItems} />
+      </header>
       <Products
         products={products}
         onDisplayNewProductForm={handleDisplayNewProductForm}
