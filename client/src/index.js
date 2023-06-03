@@ -3,13 +3,12 @@ import ReactDOM from 'react-dom/client';
 import axios from 'axios'
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
-const Cart = ({ items }) => {
-
+const Cart = ({ items, onCheckoutCart }) => {
   return (
     <div className="cart">
       <h2>Your Cart</h2>
       {items.length === 0 ? <p>"Your cart is empty"</p> : <CartItemListing items={items} />}
-      <button className="checkout" disabled>Checkout</button>
+      <button className="checkout" onClick={onCheckoutCart} disabled={!items.length}>Checkout</button>
     </div>
   );
 }
@@ -131,7 +130,9 @@ const Product = ({ productId, productTitle, price, quantityInStock, onDeleteProd
       <div className="product-details">
         <h3>{productTitle}</h3>
         <p className="price">{price}</p>
-        <p className="quantity">{quantityInStock} left in stock</p>
+        <p className={`quantity ${!quantityInStock && 'none-left'}`}>
+          {quantityInStock} left in stock
+        </p>
         <Actions
           onEditButtonClick={handleEditButtonClick}
           isUpdateFormVisible={isUpdateFormVisible}
@@ -154,10 +155,18 @@ const Actions = ({ onEditButtonClick, isUpdateFormVisible, onAddProductToCart, p
       null :
       <button className="edit" onClick={onEditButtonClick}>Edit</button>
   }
+  console.log(quantityInStock);
+
 
   return (
     <div className="actions product-actions">
-      <button className="add-to-cart" onClick={() => onAddProductToCart(productId, productTitle, price, quantityInStock)}>Add to Cart</button>
+      <button
+        className="add-to-cart"
+        onClick={() => onAddProductToCart(productId, productTitle, price, quantityInStock)}
+        disabled={!quantityInStock}
+      >
+        Add to Cart
+      </button>
       {displayEditButton()}
     </div>
   )
@@ -368,21 +377,31 @@ const App = () => {
     const updatedProducts = products.map(product => {
       if (product._id === productId) {
         return response.data.product;
-      } 
+      }
       else {
         return product;
       }
     });
-    const updatedCartItems = cartItems.map(cartItem => {
-      if (cartItem.productId === productId) {
-        return response.data.item;
-      }
-      else {
-        return cartItem;
-      }
-    });
+
     setProducts(updatedProducts);
-    setCartItems(updatedCartItems);  
+
+    if (cartItems.find(item => item.productId === productId)) {
+      setCartItems(cartItems.map(cartItem => {
+        if (cartItem.productId === productId) {
+          return response.data.item;
+        } else {
+          return cartItem;
+        }
+      }));
+    } else {
+      setCartItems(cartItems.concat(response.data.item))
+    }
+  }
+
+  const handleCheckoutCart = async () => {
+    console.log('checkout cart');
+    axios.post('/api/checkout');
+    setCartItems([]);
   }
 
 
@@ -400,7 +419,7 @@ const App = () => {
     <div id="app">
       <header>
         <h1>The Shop!</h1>
-        <Cart items={cartItems} />
+        <Cart items={cartItems} onCheckoutCart={handleCheckoutCart} />
       </header>
       <Products
         products={products}
