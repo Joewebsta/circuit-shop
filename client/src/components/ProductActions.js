@@ -1,12 +1,14 @@
 import React from 'react';
 
-const ProductActions = ({ onEditButtonClick, isEditFormVisible, onAddProductToCart, productId, productTitle, price, quantityInStock }) => {
-  const displayEditButton = () => {
-    return isEditFormVisible ?
-      null :
-      <button className="edit" onClick={onEditButtonClick}>Edit</button>
-  }
-
+const ProductActions = ({
+  onEditButtonClick,
+  isEditFormVisible,
+  onAddProductToCart,
+  productId,
+  productTitle,
+  price,
+  quantityInStock
+}) => {
   return (
     <div className="actions product-actions">
       <button
@@ -16,7 +18,10 @@ const ProductActions = ({ onEditButtonClick, isEditFormVisible, onAddProductToCa
       >
         Add to Cart
       </button>
-      {displayEditButton()}
+      {isEditFormVisible
+        ? null
+        : <button className="edit" onClick={onEditButtonClick}>Edit</button>
+      }
     </div>
   )
 }

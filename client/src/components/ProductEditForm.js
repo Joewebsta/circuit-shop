@@ -5,17 +5,9 @@ const ProductEditForm = ({ productId, productTitle, price, quantityInStock, onEd
   const [newPrice, setNewPrice] = useState(price);
   const [newQuantity, setNewQuantity] = useState(quantityInStock);
 
-  const handleNewTitleChange = (event) => {
-    setNewTitle(event.target.value);
-  }
-
-  const handleNewPriceChange = (event) => {
-    setNewPrice(event.target.value);
-  }
-
-  const handleNewQuantityChange = (event) => {
-    setNewQuantity(event.target.value);
-  }
+  const handleNewTitleChange = (event) => setNewTitle(event.target.value);
+  const handleNewPriceChange = (event) => setNewPrice(event.target.value);
+  const handleNewQuantityChange = (event) => setNewQuantity(event.target.value);
 
   const handleUpdateButtonClick = (e) => {
     e.preventDefault();

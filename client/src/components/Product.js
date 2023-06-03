@@ -2,7 +2,15 @@ import React, { useState } from 'react';
 import ProductEditForm from './ProductEditForm';
 import ProductActions from './ProductActions';
 
-const Product = ({ productId, productTitle, price, quantityInStock, onDeleteProduct, onEditProduct, onAddProductToCart }) => {
+const Product = ({
+  productId,
+  productTitle,
+  price,
+  quantityInStock,
+  onDeleteProduct,
+  onEditProduct,
+  onAddProductToCart
+}) => {
   const [isEditFormVisible, setIsEditFormVisible] = useState(false);
 
   const handleDeleteButtonClick = (event) => {
@@ -10,17 +18,9 @@ const Product = ({ productId, productTitle, price, quantityInStock, onDeleteProd
     onDeleteProduct(productId);
   }
 
-  const handleEditButtonClick = () => {
-    setIsEditFormVisible(true);
-  }
-
-  const handleCancelButtonClick = () => {
-    hideProductEditForm();
-  }
-
-  const hideProductEditForm = () => {
-    setIsEditFormVisible(false);
-  }
+  const handleEditButtonClick = () => setIsEditFormVisible(true);
+  const handleCancelButtonClick = () => hideProductEditForm();
+  const hideProductEditForm = () => setIsEditFormVisible(false);
 
   const displayEditForm = () => {
     return isEditFormVisible ?
@@ -40,7 +40,7 @@ const Product = ({ productId, productTitle, price, quantityInStock, onDeleteProd
     <li className="product">
       <div className="product-details">
         <h3>{productTitle}</h3>
-        <p className="price">{price}</p>
+        <p className="price">${price}</p>
         <p className={`quantity ${!quantityInStock && 'none-left'}`}>
           {quantityInStock} left in stock
         </p>

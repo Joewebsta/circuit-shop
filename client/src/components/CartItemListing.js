@@ -2,6 +2,10 @@ import React from 'react';
 import CartItem from './CartItem';
 
 const CartItemListing = ({ items }) => {
+  const total = () => items.reduce((sum, current) => {
+    return sum + (current.price * current.quantity)
+  }, 0);
+
   return (
     <table className="cart-items">
       <thead>
@@ -16,7 +20,7 @@ const CartItemListing = ({ items }) => {
       </tbody>
       <tfoot>
         <tr>
-          <td colSpan="3" className="total" >Total: ${items.reduce((sum, current) => sum + current.price, 0)}</td>
+          <td colSpan="3" className="total" >Total: ${total()}</td>
         </tr>
       </tfoot>
     </table>

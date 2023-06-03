@@ -5,21 +5,18 @@ const AddForm = ({ onDisplayNewProductForm, onHideNewProductForm, isAddFormVisib
   const [productPrice, setProductPrice] = useState("");
   const [productQuantity, setProductQuantity] = useState("");
 
-  const handleProductNameChange = (event) => {
-    setProductName(event.target.value);
-  }
-
-  const handleProductPriceChange = (event) => {
-    setProductPrice(event.target.value);
-  }
-
-  const handleProductQuantityChange = (event) => {
-    setProductQuantity(event.target.value);
-  }
+  const handleProductNameChange = (event) => setProductName(event.target.value);
+  const handleProductPriceChange = (event) => setProductPrice(event.target.value);
+  const handleProductQuantityChange = (event) => setProductQuantity(event.target.value);
 
   const submitForm = (event) => {
     event.preventDefault();
     onAddNewProduct(productTitle, productPrice, productQuantity, clearProductForm);
+  }
+
+  const handleCancelButtonClick = () => {
+    onHideNewProductForm();
+    clearProductForm();
   }
 
   const clearProductForm = () => {
@@ -71,7 +68,7 @@ const AddForm = ({ onDisplayNewProductForm, onHideNewProductForm, isAddFormVisib
         </div>
         <div className="actions form-actions">
           <button type="submit">Add</button>
-          <button type="button" onClick={onHideNewProductForm} >Cancel</button>
+          <button type="button" onClick={handleCancelButtonClick}>Cancel</button>
         </div>
       </form>
     </div>

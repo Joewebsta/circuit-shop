@@ -8,16 +8,12 @@ const Products = (props) => {
       <ProductListing {...props} />
       <AddForm
         onDisplayNewProductForm={props.onDisplayNewProductForm}
-        isAddFormVisible={props.isAddFormVisible}
         onHideNewProductForm={props.onHideNewProductForm}
         onAddNewProduct={props.onAddNewProduct}
+        isAddFormVisible={props.isAddFormVisible}
       />
     </main>
   )
 }
-
-
-
-
 
 export default Products;

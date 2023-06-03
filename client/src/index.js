@@ -40,8 +40,15 @@ const App = () => {
   }
 
   const handleEditProduct = async (productId, newTitle, newPrice, newQuantity, callback) => {
-    const updatedProduct = { title: newTitle, price: newPrice, quantity: newQuantity }
-    setProducts(products.map(product => product._id === productId ? { ...product, title: newTitle, quantity: newQuantity, price: newPrice } : product));
+    const updatedProduct = {
+      title: newTitle,
+      price: newPrice,
+      quantity: newQuantity
+    }
+
+    setProducts(products.map(product => {
+      return product._id === productId ? { ...product, title: newTitle, quantity: newQuantity, price: newPrice } : product;
+    }));
     //need put cart endpoint: setCartItems(cartItems.map(item => item.productId === productId ? { ...item, title: newTitle, price: parseInt(newPrice, 10) } : item));
     axios.put(`/api/products/${productId}`, updatedProduct);
     callback();
@@ -55,44 +62,30 @@ const App = () => {
 
   const handleAddProductToCart = async (productId) => {
     const response = await axios.post('/api/add-to-cart', { productId });
-    const updatedProducts = products.map(product => {
-      if (product._id === productId) {
-        return response.data.product;
-      }
-      else {
-        return product;
+    const itemExists = cartItems.find(item => item.productId === productId);
+
+    setProducts(products => products.map(product => {
+      return product._id === productId ? response.data.product : product;
+    }));
+
+    setCartItems(cartItems => {
+      if (itemExists) {
+        return cartItems.map(cartItem =>
+          cartItem.productId === productId ? response.data.item : cartItem
+        );
+      } else {
+        return cartItems.concat(response.data.item);
       }
     });
-
-    setProducts(updatedProducts);
-
-    if (cartItems.find(item => item.productId === productId)) {
-      setCartItems(cartItems.map(cartItem => {
-        if (cartItem.productId === productId) {
-          return response.data.item;
-        } else {
-          return cartItem;
-        }
-      }));
-    } else {
-      setCartItems(cartItems.concat(response.data.item))
-    }
   }
 
   const handleCheckoutCart = async () => {
-    console.log('checkout cart');
     axios.post('/api/checkout');
     setCartItems([]);
   }
 
-
-  const handleDisplayNewProductForm = (e) => {
-    setIsAddFormVisible(true);
-  }
-
-  const handleHideNewProductForm = (e) => {
-    setIsAddFormVisible(false);
-  }
+  const handleDisplayNewProductForm = () => setIsAddFormVisible(true);
+  const handleHideNewProductForm = () => setIsAddFormVisible(false);
 
   return (
     <div id="app">
