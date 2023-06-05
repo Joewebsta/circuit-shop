@@ -4,39 +4,35 @@
 
 // Pass an item
 // Test that items are shown
-  // Test for correct title/price/quantity/total
+  // Test for correct title/price/quantity
 
 import React from "react";
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
-import CartItemListing from "./CartItemListing";
+import ProductListing from "./ProductListing";
 
-const item = {
+const product = {
+  key: "mock id",
   title: "iPhone",
   quantity: 100,
   price: 200
 }
 
-const renderCart = () => {
-  render(<CartItemListing items={[item]} />);
+const renderProductList = () => {
+  render(<ProductListing products={[product]} />);
 }
 
 test('cart contains correct item title', () => {
-  renderCart();
+  renderProductList();
   expect(screen.getByText('iPhone')).toBeInTheDocument();
 });
 
 test('cart contains correct item price', () => {
-  renderCart();
-  expect(screen.getByText('100')).toBeInTheDocument();
+  renderProductList();
+  expect(screen.getByText(/100/)).toBeInTheDocument();
 });
 
 test('cart contains correct item quantity', () => {
-  renderCart();
-  expect(screen.getByText('$200')).toBeInTheDocument();
-});
-
-test('cart displays correct item total price', () => {
-  renderCart();
-  expect(screen.getByText(/20000/)).toBeInTheDocument();
+  renderProductList();
+  expect(screen.getByText(/200/)).toBeInTheDocument();
 });
