@@ -7,43 +7,33 @@ import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import CartItem from "./CartItem";
 
-test('Contains item title', () => {
-  const item = {
-    title: "iPhone",
-    quantity: 100,
-    price: 100
-  }
+const item = {
+  title: "iPhone",
+  quantity: 100,
+  price: 100
+}
 
-  render(
+const renderCartItem = () => {
+  return render(
     <table>
       <tbody>
         <CartItem item={item} />
       </tbody>
     </table>
   );
+};
 
+test('Contains item title', () => {
+  renderCartItem();
   expect(screen.getByText('iPhone')).toBeInTheDocument()
 });
 
 test('Contains item quantity', () => {
-  const item = {
-    title: "iPhone",
-    quantity: 100,
-    price: 100
-  }
-
-  screen.debug()
-  render(<CartItem item={item} />);
+  renderCartItem();
   expect(screen.getByText('100')).toBeInTheDocument()
 });
 
 test('Contains price quantity', () => {
-  const item = {
-    title: "iPhone",
-    quantity: 100,
-    price: 100
-  }
-
-  render(<CartItem item={item} />);
+  renderCartItem();
   expect(screen.getByText('$100')).toBeInTheDocument()
 });
