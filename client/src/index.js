@@ -94,6 +94,7 @@ const App = () => {
         products={products}
         onDisplayNewProductForm={handleDisplayNewProductForm}
         isAddFormVisible={isAddFormVisible}
+        // Does not need to be in app component
         onHideNewProductForm={handleHideNewProductForm}
         onEditProduct={handleEditProduct}
         onAddNewProduct={handleAddNewProduct}
