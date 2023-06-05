@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
-import axios from 'axios'
 import Cart from './components/Cart';
 import Products from './components/Products';
+import productService from './services/products'
+import cartService from './services/cart'
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 const App = () => {
@@ -12,8 +13,7 @@ const App = () => {
 
   useEffect(() => {
     const getAllProducts = async () => {
-      const response = await axios.get('/api/products')
-      const products = await response.data;
+      const products = await productService.getProducts();
       setProducts(products);
     }
 
@@ -22,8 +22,7 @@ const App = () => {
 
   useEffect(() => {
     const getCartItems = async () => {
-      const response = await axios.get('/api/cart')
-      const cartItems = await response.data;
+      const cartItems = await cartService.getCartItems();
       setCartItems(cartItems);
     }
 
@@ -31,11 +30,9 @@ const App = () => {
   }, []);
 
   const handleAddNewProduct = async (name, price, quantity, clearProductForm) => {
-    const obj = { title: name, price: parseInt(price, 10), quantity: parseInt(quantity, 10) };
-    const response = await axios.post('/api/products', obj);
-    const newProduct = await response.data;
-    const updatedProducts = products.concat(newProduct);
-    setProducts(updatedProducts);
+    const newProduct = { title: name, price: parseInt(price, 10), quantity: parseInt(quantity, 10) };
+    const returnedNewProduct = await productService.createProduct(newProduct);
+    setProducts(products.concat(returnedNewProduct));
     clearProductForm();
   }
 
@@ -50,37 +47,37 @@ const App = () => {
       return product._id === productId ? { ...product, title: newTitle, quantity: newQuantity, price: newPrice } : product;
     }));
     //need put cart endpoint: setCartItems(cartItems.map(item => item.productId === productId ? { ...item, title: newTitle, price: parseInt(newPrice, 10) } : item));
-    axios.put(`/api/products/${productId}`, updatedProduct);
+    productService.updateProduct(productId, updatedProduct);
     callback();
   }
 
   const handleDeleteProduct = async (productId) => {
-    await axios.delete(`/api/products/${productId}`);
+    await productService.deleteProduct(productId);
     const updatedProducts = products.filter(product => product._id !== productId);
     setProducts(updatedProducts);
   }
 
   const handleAddProductToCart = async (productId) => {
-    const response = await axios.post('/api/add-to-cart', { productId });
+    const data = await cartService.addToCart(productId);
     const itemExists = cartItems.find(item => item.productId === productId);
 
     setProducts(products => products.map(product => {
-      return product._id === productId ? response.data.product : product;
+      return product._id === productId ? data.product : product;
     }));
 
     setCartItems(cartItems => {
       if (itemExists) {
         return cartItems.map(cartItem =>
-          cartItem.productId === productId ? response.data.item : cartItem
+          cartItem.productId === productId ? data.item : cartItem
         );
       } else {
-        return cartItems.concat(response.data.item);
+        return cartItems.concat(data.item);
       }
     });
   }
 
   const handleCheckoutCart = async () => {
-    axios.post('/api/checkout');
+    cartService.checkout();
     setCartItems([]);
   }
 
@@ -97,6 +94,7 @@ const App = () => {
         products={products}
         onDisplayNewProductForm={handleDisplayNewProductForm}
         isAddFormVisible={isAddFormVisible}
+        // Does not need to be in app component
         onHideNewProductForm={handleHideNewProductForm}
         onEditProduct={handleEditProduct}
         onAddNewProduct={handleAddNewProduct}
