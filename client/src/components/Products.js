@@ -1,10 +1,10 @@
-import React from 'react';
-import ProductListing from './ProductListing';
-import AddForm from './AddForm';
+import React from "react";
+import ProductListing from "./ProductListing";
+import AddForm from "./AddForm";
 
 const Products = (props) => {
   return (
-    <main>
+    <main className="products">
       <ProductListing {...props} />
       <AddForm
         onDisplayNewProductForm={props.onDisplayNewProductForm}
@@ -13,7 +13,7 @@ const Products = (props) => {
         isAddFormVisible={props.isAddFormVisible}
       />
     </main>
-  )
-}
+  );
+};
 
 export default Products;
