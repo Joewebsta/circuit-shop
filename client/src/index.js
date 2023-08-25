@@ -4,6 +4,7 @@ import Cart from "./components/Cart";
 import Products from "./components/Products";
 import productService from "./services/products";
 import cartService from "./services/cart";
+import "@fontsource-variable/space-grotesk";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 const App = () => {
