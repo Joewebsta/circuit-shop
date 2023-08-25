@@ -115,6 +115,7 @@ const App = () => {
 
   return (
     <div id="app">
+      <h1 className="font-bold text-3xl underline">Hello world!</h1>
       <Products
         products={products}
         onDisplayNewProductForm={handleDisplayNewProductForm}
