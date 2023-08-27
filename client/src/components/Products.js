@@ -6,12 +6,12 @@ const Products = (props) => {
   return (
     <main className="products">
       <ProductListing {...props} />
-      <AddForm
+      {/* <AddForm
         onDisplayNewProductForm={props.onDisplayNewProductForm}
         onHideNewProductForm={props.onHideNewProductForm}
         onAddNewProduct={props.onAddNewProduct}
         isAddFormVisible={props.isAddFormVisible}
-      />
+      /> */}
     </main>
   );
 };

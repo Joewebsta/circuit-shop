@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 const ProductActions = ({
   onEditButtonClick,
@@ -7,23 +7,29 @@ const ProductActions = ({
   productId,
   productTitle,
   price,
-  quantityInStock
+  quantityInStock,
 }) => {
   return (
-    <div className="actions product-actions">
+    <div className="flex flec-col gap-4">
       <button
-        className="add-to-cart"
-        onClick={() => onAddProductToCart(productId, productTitle, price, quantityInStock)}
+        className="py-[5px] px-3 bg-[#282322] text-white font-medium rounded"
+        onClick={() =>
+          onAddProductToCart(productId, productTitle, price, quantityInStock)
+        }
         disabled={!quantityInStock || isEditFormVisible}
       >
         Add to Cart
       </button>
-      {isEditFormVisible
-        ? null
-        : <button className="edit" onClick={onEditButtonClick}>Edit</button>
-      }
+      {isEditFormVisible ? null : (
+        <button
+          className="py-[5px] px-3 text font-medium"
+          onClick={onEditButtonClick}
+        >
+          Edit
+        </button>
+      )}
     </div>
-  )
-}
+  );
+};
 
 export default ProductActions;

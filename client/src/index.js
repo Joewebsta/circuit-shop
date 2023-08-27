@@ -117,7 +117,7 @@ const App = () => {
   return (
     <div id="app" className="px-8 pb-8 pt-4">
       <Header />
-      <div>
+      <div className="flex gap-[50px]">
         <Products
           products={products}
           onDisplayNewProductForm={handleDisplayNewProductForm}
@@ -129,7 +129,7 @@ const App = () => {
           onDeleteProduct={handleDeleteProduct}
           onAddProductToCart={handleAddProductToCart}
         />
-        <Cart items={cartItems} onCheckoutCart={handleCheckoutCart} />
+        {/* <Cart items={cartItems} onCheckoutCart={handleCheckoutCart} /> */}
       </div>
     </div>
   );
