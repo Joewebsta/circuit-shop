@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import Cart from "./components/Cart";
+import Header from "./components/Header";
 import Products from "./components/Products";
 import productService from "./services/products";
 import cartService from "./services/cart";
@@ -114,20 +115,22 @@ const App = () => {
   const handleHideNewProductForm = () => setIsAddFormVisible(false);
 
   return (
-    <div id="app">
-      <h1 className="font-bold text-3xl underline">Hello world!</h1>
-      <Products
-        products={products}
-        onDisplayNewProductForm={handleDisplayNewProductForm}
-        isAddFormVisible={isAddFormVisible}
-        // Does not need to be in app component
-        onHideNewProductForm={handleHideNewProductForm}
-        onEditProduct={handleEditProduct}
-        onAddNewProduct={handleAddNewProduct}
-        onDeleteProduct={handleDeleteProduct}
-        onAddProductToCart={handleAddProductToCart}
-      />
-      <Cart items={cartItems} onCheckoutCart={handleCheckoutCart} />
+    <div id="app" className="px-8 pb-8 pt-4">
+      <Header />
+      <div>
+        <Products
+          products={products}
+          onDisplayNewProductForm={handleDisplayNewProductForm}
+          isAddFormVisible={isAddFormVisible}
+          // Does not need to be in app component
+          onHideNewProductForm={handleHideNewProductForm}
+          onEditProduct={handleEditProduct}
+          onAddNewProduct={handleAddNewProduct}
+          onDeleteProduct={handleDeleteProduct}
+          onAddProductToCart={handleAddProductToCart}
+        />
+        <Cart items={cartItems} onCheckoutCart={handleCheckoutCart} />
+      </div>
     </div>
   );
 };
