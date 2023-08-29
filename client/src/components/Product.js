@@ -13,27 +13,13 @@ const Product = ({
 }) => {
   const [isEditFormVisible, setIsEditFormVisible] = useState(false);
 
-  const handleDeleteButtonClick = (event) => {
-    event.preventDefault();
-    onDeleteProduct(productId);
-  };
-
   const handleEditButtonClick = () => setIsEditFormVisible(true);
   const handleCancelButtonClick = () => hideProductEditForm();
   const hideProductEditForm = () => setIsEditFormVisible(false);
 
-  const displayEditForm = () => {
-    return isEditFormVisible ? (
-      <ProductEditForm
-        productTitle={productTitle}
-        price={price}
-        quantityInStock={quantityInStock}
-        onEditProduct={onEditProduct}
-        productId={productId}
-        onHandleCancelButtonClick={handleCancelButtonClick}
-        hideProductEditForm={hideProductEditForm}
-      />
-    ) : null;
+  const handleDeleteButtonClick = (event) => {
+    event.preventDefault();
+    onDeleteProduct(productId);
   };
 
   return (
@@ -43,7 +29,6 @@ const Product = ({
           <h3 className="text-lg font-medium">{productTitle}</h3>
           <p className="text-lg price">${price}</p>
         </div>
-
         <p className={`quantity ${!quantityInStock && "none-left"} mb-8`}>
           {quantityInStock} left in stock
         </p>
@@ -62,7 +47,17 @@ const Product = ({
           </button>
         </div>
       </div>
-      {displayEditForm()}
+      {isEditFormVisible ? (
+        <ProductEditForm
+          productTitle={productTitle}
+          price={price}
+          quantityInStock={quantityInStock}
+          onEditProduct={onEditProduct}
+          productId={productId}
+          onHandleCancelButtonClick={handleCancelButtonClick}
+          hideProductEditForm={hideProductEditForm}
+        />
+      ) : null}
     </li>
   );
 };

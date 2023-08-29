@@ -1,6 +1,14 @@
 import React, { useState } from "react";
 
-const ProductEditForm = ({ productId, productTitle, price, quantityInStock, onEditProduct, onHandleCancelButtonClick, hideProductEditForm }) => {
+const ProductEditForm = ({
+  productId,
+  productTitle,
+  price,
+  quantityInStock,
+  onEditProduct,
+  onHandleCancelButtonClick,
+  hideProductEditForm,
+}) => {
   const [newTitle, setNewTitle] = useState(productTitle);
   const [newPrice, setNewPrice] = useState(price);
   const [newQuantity, setNewQuantity] = useState(quantityInStock);
@@ -11,19 +19,25 @@ const ProductEditForm = ({ productId, productTitle, price, quantityInStock, onEd
 
   const handleUpdateButtonClick = (e) => {
     e.preventDefault();
-    onEditProduct(productId, newTitle, newPrice, newQuantity, resetProductEditForm);
+    onEditProduct(
+      productId,
+      newTitle,
+      newPrice,
+      newQuantity,
+      resetProductEditForm
+    );
     hideProductEditForm();
-  }
+  };
 
   const resetProductEditForm = () => {
     setNewTitle("");
     setNewPrice("");
     setNewQuantity("");
-  }
+  };
 
   return (
-    <div className="edit-form">
-      <h3>Edit Product</h3>
+    <div className="edit-form bg-[#ECEAE8] mt-5 p-5">
+      <h3 className="font-medium">Edit Product</h3>
       <form>
         <div className="input-group">
           <label htmlFor="product-name">Product Name</label>
@@ -59,12 +73,16 @@ const ProductEditForm = ({ productId, productTitle, price, quantityInStock, onEd
         </div>
 
         <div className="actions form-actions">
-          <button type="submit" onClick={handleUpdateButtonClick}>Update</button>
-          <button type="button" onClick={onHandleCancelButtonClick}>Cancel</button>
+          <button type="submit" onClick={handleUpdateButtonClick}>
+            Update
+          </button>
+          <button type="button" onClick={onHandleCancelButtonClick}>
+            Cancel
+          </button>
         </div>
       </form>
     </div>
-  )
-}
+  );
+};
 
 export default ProductEditForm;

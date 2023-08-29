@@ -1,17 +1,34 @@
 import React from "react";
-import ProductListing from "./ProductListing";
+import ProductsList from "./ProductsList";
 import AddForm from "./AddForm";
 
-const Products = (props) => {
+const Products = ({
+  products,
+  onDeleteProduct,
+  onDisplayNewProductForm,
+  onHideNewProductForm,
+  onAddNewProduct,
+  isAddFormVisible,
+  onEditProduct,
+  onAddProductToCart,
+}) => {
   return (
     <main className="products">
-      <ProductListing {...props} />
-      {/* <AddForm
-        onDisplayNewProductForm={props.onDisplayNewProductForm}
-        onHideNewProductForm={props.onHideNewProductForm}
-        onAddNewProduct={props.onAddNewProduct}
-        isAddFormVisible={props.isAddFormVisible}
-      /> */}
+      <div className="flex items-center mb-5 justify-between">
+        <h2 className="text-3xl font-bold ">Products</h2>
+        <AddForm
+          onDisplayNewProductForm={onDisplayNewProductForm}
+          onHideNewProductForm={onHideNewProductForm}
+          onAddNewProduct={onAddNewProduct}
+          isAddFormVisible={isAddFormVisible}
+        />
+      </div>
+      <ProductsList
+        products={products}
+        onDeleteProduct={onDeleteProduct}
+        onEditProduct={onEditProduct}
+        onAddProductToCart={onAddProductToCart}
+      />
     </main>
   );
 };

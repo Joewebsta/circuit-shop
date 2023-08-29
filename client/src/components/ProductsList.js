@@ -1,10 +1,9 @@
 import React from "react";
 import Product from "./Product";
 
-const ProductListing = ({
+const ProductsList = ({
   products,
   onDeleteProduct,
-  isEditFormVisible,
   onEditProduct,
   onAddProductToCart,
 }) => {
@@ -21,18 +20,16 @@ const ProductListing = ({
           onDeleteProduct={onDeleteProduct}
           onEditProduct={onEditProduct}
           onAddProductToCart={onAddProductToCart}
-          isEditFormVisible={isEditFormVisible}
         />
       );
     });
   };
 
   return (
-    <div className="product-listing">
-      <h2 className="text-3xl font-bold mb-5">Products</h2>
-      <ul className="product-details">{productList()}</ul>
+    <div>
+      <ul>{productList()}</ul>
     </div>
   );
 };
 
-export default ProductListing;
+export default ProductsList;

@@ -115,7 +115,7 @@ const App = () => {
   const handleHideNewProductForm = () => setIsAddFormVisible(false);
 
   return (
-    <div id="app" className="px-8 pb-8 pt-4">
+    <div id="app" className="px-8 pb-8 pt-4 m-auto">
       <Header />
       <div className="flex gap-[50px]">
         <Products
