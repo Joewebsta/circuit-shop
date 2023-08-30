@@ -12,7 +12,7 @@ const ProductActions = ({
   return (
     <div className="flex flec-col gap-4">
       <button
-        className="py-[5px] px-3 bg-[#282322] text-white font-medium rounded"
+        className="py-[5px] px-3 bg-[#030303] text-white font-medium rounded"
         onClick={() =>
           onAddProductToCart(productId, productTitle, price, quantityInStock)
         }

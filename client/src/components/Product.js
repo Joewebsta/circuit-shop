@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ProductEditForm from "./ProductEditForm";
 import ProductActions from "./ProductActions";
+import { IconTrash } from "@tabler/icons-react";
 
 const Product = ({
   productId,
@@ -23,16 +24,20 @@ const Product = ({
   };
 
   return (
-    <li className="border-b p-5 first:border-t">
+    <li className="border-b border-[#BFB9B2] p-5 first:border-t">
       <div className="">
         <div className="flex justify-between mb-4">
           <h3 className="text-lg font-medium">{productTitle}</h3>
-          <p className="text-lg price">${price}</p>
+          <p className="text-lg price font-medium">${price}</p>
         </div>
-        <p className={`quantity ${!quantityInStock && "none-left"} mb-8`}>
+        <p
+          className={`quantity ${
+            !quantityInStock && "none-left"
+          } mb-8 text-[#5D534F]`}
+        >
           {quantityInStock} left in stock
         </p>
-        <div className="flex justify-between">
+        <div className="flex justify-between items-center">
           <ProductActions
             onEditButtonClick={handleEditButtonClick}
             isEditFormVisible={isEditFormVisible}
@@ -43,7 +48,7 @@ const Product = ({
             quantityInStock={quantityInStock}
           />
           <button className="delete-button" onClick={handleDeleteButtonClick}>
-            <span>X</span>
+            <IconTrash size={20} />
           </button>
         </div>
       </div>
