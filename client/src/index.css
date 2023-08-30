@@ -213,17 +213,17 @@ button:disabled {
   cursor: pointer;
 }
 
-form {
+/* form {
   width: 400px;
-}
+} */
 
-.input-group input {
+/* .input-group input {
   float: right;
-}
-
+} */
+/* 
 .input-group label {
   margin-right: 10px;
-}
+} */
 
 input[type="text"] input[type="number"] {
   padding: 3px 2px;

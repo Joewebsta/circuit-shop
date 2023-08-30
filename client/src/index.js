@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom/client";
-import Cart from "./components/Cart";
 import Header from "./components/Header";
 import Products from "./components/Products";
-import productService from "./services/products";
-import cartService from "./services/cart";
+import Cart from "./components/Cart";
+import {
+  getProducts,
+  deleteProduct,
+  updateProduct,
+  createProduct,
+} from "./services/products";
+import { getCartItems, addToCart, checkout } from "./services/cart";
 import "@fontsource-variable/space-grotesk";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -15,20 +20,23 @@ const App = () => {
 
   useEffect(() => {
     const getAllProducts = async () => {
-      const products = await productService.getProducts();
-      setProducts(products);
+      try {
+        setProducts(await getProducts());
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    const getAllCartItems = async () => {
+      try {
+        setCartItems(await getCartItems());
+      } catch (error) {
+        console.error(error);
+      }
     };
 
     getAllProducts();
-  }, []);
-
-  useEffect(() => {
-    const getCartItems = async () => {
-      const cartItems = await cartService.getCartItems();
-      setCartItems(cartItems);
-    };
-
-    getCartItems();
+    getAllCartItems();
   }, []);
 
   const handleAddNewProduct = async (
@@ -42,7 +50,7 @@ const App = () => {
       price: parseInt(price, 10),
       quantity: parseInt(quantity, 10),
     };
-    const returnedNewProduct = await productService.createProduct(newProduct);
+    const returnedNewProduct = await createProduct(newProduct);
     setProducts(products.concat(returnedNewProduct));
     clearProductForm();
   };
@@ -73,12 +81,12 @@ const App = () => {
       })
     );
     //need put cart endpoint: setCartItems(cartItems.map(item => item.productId === productId ? { ...item, title: newTitle, price: parseInt(newPrice, 10) } : item));
-    productService.updateProduct(productId, updatedProduct);
+    updateProduct(productId, updatedProduct);
     callback();
   };
 
   const handleDeleteProduct = async (productId) => {
-    await productService.deleteProduct(productId);
+    await deleteProduct(productId);
     const updatedProducts = products.filter(
       (product) => product._id !== productId
     );
@@ -86,7 +94,7 @@ const App = () => {
   };
 
   const handleAddProductToCart = async (productId) => {
-    const data = await cartService.addToCart(productId);
+    const data = await addToCart(productId);
     const itemExists = cartItems.find((item) => item.productId === productId);
 
     setProducts((products) =>
@@ -107,7 +115,7 @@ const App = () => {
   };
 
   const handleCheckoutCart = async () => {
-    cartService.checkout();
+    checkout();
     setCartItems([]);
   };
 
@@ -115,14 +123,13 @@ const App = () => {
   const handleHideNewProductForm = () => setIsAddFormVisible(false);
 
   return (
-    <div id="app" className="px-8 pb-8 pt-4 m-auto">
+    <div className="max-w-7xl px-8 pb-8 pt-4 m-auto">
       <Header />
       <div className="flex gap-[50px]">
         <Products
           products={products}
           onDisplayNewProductForm={handleDisplayNewProductForm}
           isAddFormVisible={isAddFormVisible}
-          // Does not need to be in app component
           onHideNewProductForm={handleHideNewProductForm}
           onEditProduct={handleEditProduct}
           onAddNewProduct={handleAddNewProduct}

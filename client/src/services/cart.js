@@ -1,33 +1,27 @@
-import axios from 'axios'
+import axios from "axios";
 
-const getCartItems = async () => {
+export const getCartItems = async () => {
   try {
-    const response = await axios.get('/api/cart')
+    const response = await axios.get("/api/cart");
     return response.data;
   } catch (error) {
     console.log("Error:", error);
   }
-}
+};
 
-const addToCart = async (productId) => {
+export const addToCart = async (productId) => {
   try {
-    const response = await axios.post('/api/add-to-cart', { productId });
+    const response = await axios.post("/api/add-to-cart", { productId });
     return response.data;
   } catch (error) {
     console.log("Error:", error);
   }
-}
+};
 
-const checkout = async () => {
+export const checkout = async () => {
   try {
-    axios.post('/api/checkout');
+    axios.post("/api/checkout");
   } catch (error) {
     console.log("Error:", error);
   }
-}
-
-export default {
-  getCartItems,
-  addToCart,
-  checkout
-}
+};
