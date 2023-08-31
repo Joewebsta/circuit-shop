@@ -14,7 +14,7 @@ const Products = ({
   onAddProductToCart,
 }) => {
   return (
-    <main className="products">
+    <main className="w-product">
       <div className="flex items-center mb-5 justify-between">
         <h2 className="text-3xl font-bold ">Products</h2>
         <button

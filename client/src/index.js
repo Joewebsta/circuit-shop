@@ -1,3 +1,6 @@
+import "./styles/index.css";
+import "./styles/reset.css";
+import "@fontsource-variable/space-grotesk";
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import Header from "./components/Header";
@@ -10,7 +13,7 @@ import {
   createProduct,
 } from "./services/products";
 import { getCartItems, addToCart, checkout } from "./services/cart";
-import "@fontsource-variable/space-grotesk";
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 const App = () => {
@@ -38,6 +41,8 @@ const App = () => {
     getAllProducts();
     getAllCartItems();
   }, []);
+
+  console.log(products);
 
   const handleAddNewProduct = async (
     name,
@@ -68,6 +73,8 @@ const App = () => {
       quantity: newQuantity,
     };
 
+    await updateProduct(productId, updatedProduct);
+
     setProducts(
       products.map((product) => {
         return product._id === productId
@@ -81,7 +88,7 @@ const App = () => {
       })
     );
     //need put cart endpoint: setCartItems(cartItems.map(item => item.productId === productId ? { ...item, title: newTitle, price: parseInt(newPrice, 10) } : item));
-    updateProduct(productId, updatedProduct);
+
     callback();
   };
 
@@ -90,6 +97,7 @@ const App = () => {
     const updatedProducts = products.filter(
       (product) => product._id !== productId
     );
+
     setProducts(updatedProducts);
   };
 
@@ -123,7 +131,7 @@ const App = () => {
   const handleHideNewProductForm = () => setIsAddFormVisible(false);
 
   return (
-    <div className="max-w-7xl px-8 pb-8 pt-4 m-auto">
+    <div className="w-[1280px] px-8 pb-8 pt-4 m-auto">
       <Header />
       <div className="flex gap-[50px]">
         <Products
