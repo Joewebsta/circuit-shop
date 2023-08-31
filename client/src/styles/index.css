@@ -6,7 +6,6 @@
   --app-width: 1280px;
 }
 
-
 button:disabled {
   background: #ccc;
   /* color: #fff; */

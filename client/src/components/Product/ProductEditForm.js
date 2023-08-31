@@ -36,12 +36,14 @@ const ProductEditForm = ({
   };
 
   return (
-    <div className="edit-form bg-[#ECEAE8] mt-5 p-5">
+    <div className="edit-form bg-[#ECEAE8] mt-5 p-5 shadow-inner">
       <h3 className="font-medium mb-6">Edit Product</h3>
       <form className="gap-3">
         <div className="flex flex-col gap-3 mb-6">
           <div className="input-group">
-            <label htmlFor="product-name">Product Name</label>
+            <label className="inline-block w-[140px]" htmlFor="product-name">
+              Product Name
+            </label>
             <input
               type="text"
               className="py-1 px-3 rounded-sm"
@@ -53,7 +55,9 @@ const ProductEditForm = ({
           </div>
 
           <div className="input-group">
-            <label htmlFor="product-price">Price</label>
+            <label className="inline-block w-[140px]" htmlFor="product-price">
+              Price
+            </label>
             <input
               type="number"
               className="py-1 px-3 rounded-sm"
@@ -65,7 +69,12 @@ const ProductEditForm = ({
           </div>
 
           <div className="input-group">
-            <label htmlFor="product-quantity">Quantity</label>
+            <label
+              className="inline-block w-[140px]"
+              htmlFor="product-quantity"
+            >
+              Quantity
+            </label>
             <input
               type="number"
               className="py-1 px-3 rounded-sm"

@@ -1,18 +1,18 @@
 import React from "react";
 
 const ProductActions = ({
-  onEditButtonClick,
-  isEditFormVisible,
-  onAddProductToCart,
   productId,
   productTitle,
   price,
   quantityInStock,
+  onEditButtonClick,
+  onAddProductToCart,
+  isEditFormVisible,
 }) => {
   return (
-    <div className="flex flec-col gap-4">
+    <div className="flex gap-4">
       <button
-        className="py-[5px] px-3 bg-[#030303] text-white font-medium rounded"
+        className="py-[5px] px-3 bg-[#030303] text-white font-medium rounded disabled:text-[#4F4F4F]"
         onClick={() =>
           onAddProductToCart(productId, productTitle, price, quantityInStock)
         }

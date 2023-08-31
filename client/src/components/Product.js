@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import ProductEditForm from "./ProductEditForm";
+import ProductEditForm from "./Product/ProductEditForm";
 import ProductContent from "./Product/ProductContent";
-import ProductActions from "./ProductActions";
+import ProductActions from "./Product/ProductActions";
 import { IconTrash } from "@tabler/icons-react";
 
 const Product = ({
