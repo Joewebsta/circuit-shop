@@ -5,8 +5,9 @@ import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import Header from "./components/Header";
 import Products from "./components/Products";
-import AddForm from "./components/AddForm";
 import Cart from "./components/Cart";
+import AddForm from "./components/AddForm";
+import Overlay from "./components/Overlay";
 import {
   getProducts,
   deleteProduct,
@@ -42,8 +43,6 @@ const App = () => {
     getAllProducts();
     getAllCartItems();
   }, []);
-
-  console.log(products);
 
   const handleAddNewProduct = async (
     name,
@@ -129,6 +128,7 @@ const App = () => {
   };
 
   const handleDisplayNewProductForm = () => setIsAddFormVisible(true);
+
   const handleHideNewProductForm = () => setIsAddFormVisible(false);
 
   return (
@@ -138,26 +138,27 @@ const App = () => {
         <div className="flex gap-[50px]">
           <Products
             products={products}
-            onDisplayNewProductForm={handleDisplayNewProductForm}
-            isAddFormVisible={isAddFormVisible}
-            onHideNewProductForm={handleHideNewProductForm}
+            handleDisplayNewProductForm={handleDisplayNewProductForm}
+            // isAddFormVisible={isAddFormVisible}
+            // onHideNewProductForm={handleHideNewProductForm}
             onEditProduct={handleEditProduct}
-            onAddNewProduct={handleAddNewProduct}
+            // onAddNewProduct={handleAddNewProduct}
             onDeleteProduct={handleDeleteProduct}
             onAddProductToCart={handleAddProductToCart}
           />
           {/* <Cart items={cartItems} onCheckoutCart={handleCheckoutCart} /> */}
         </div>
-        <div className="bg-black absolute inset-0 bg-opacity-30">
-          {/* <div className="bg-black absolute inset-0 bg-opacity-50 flex justify-center items-center"> */}
+      </div>
+      {isAddFormVisible && (
+        <Overlay handleHideNewProductForm={handleHideNewProductForm}>
           <AddForm
             onDisplayNewProductForm={handleDisplayNewProductForm}
-            onHideNewProductForm={handleHideNewProductForm}
+            handleHideNewProductForm={handleHideNewProductForm}
             onAddNewProduct={handleAddNewProduct}
             // isAddFormVisible={isAddFormVisible}
           />
-        </div>
-      </div>
+        </Overlay>
+      )}
     </div>
   );
 };

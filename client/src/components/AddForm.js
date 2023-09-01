@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 const AddForm = ({
   onDisplayNewProductForm,
-  onHideNewProductForm,
+  handleHideNewProductForm,
   // isAddFormVisible,
   onAddNewProduct,
 }) => {
@@ -11,8 +11,10 @@ const AddForm = ({
   const [productQuantity, setProductQuantity] = useState("");
 
   const handleProductNameChange = (event) => setProductName(event.target.value);
+
   const handleProductPriceChange = (event) =>
     setProductPrice(event.target.value);
+
   const handleProductQuantityChange = (event) =>
     setProductQuantity(event.target.value);
 
@@ -24,10 +26,12 @@ const AddForm = ({
       productQuantity,
       clearProductForm
     );
+
+    handleHideNewProductForm();
   };
 
   const handleCancelButtonClick = () => {
-    onHideNewProductForm();
+    handleHideNewProductForm();
     clearProductForm();
   };
 
@@ -39,9 +43,9 @@ const AddForm = ({
 
   return (
     <div className="bg-[#f7f6f5] w-[500px] m-auto mt-16 p-7 rounded-md">
-      <h3 className="text-lg font-medium mb-7">Add Product</h3>
+      <h3 className="text-2xl font-medium mb-9">Add Product</h3>
       <form onSubmit={submitForm}>
-        <div className="flex flex-col gap-5 mb-7">
+        <div className="flex flex-col gap-5 mb-9">
           <div className="flex items-center">
             <label className="w-32 inline-block" htmlFor="product-name">
               Product Name:

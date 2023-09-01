@@ -6,12 +6,12 @@ import { IconPlus } from "@tabler/icons-react";
 const Products = ({
   products,
   onDeleteProduct,
-  onDisplayNewProductForm,
+  handleDisplayNewProductForm,
   onHideNewProductForm,
   onAddNewProduct,
-  isAddFormVisible,
   onEditProduct,
   onAddProductToCart,
+  isAddFormVisible,
 }) => {
   return (
     <main className="w-product">
@@ -19,7 +19,7 @@ const Products = ({
         <h2 className="text-3xl font-bold ">Products</h2>
         <button
           className="flex gap-2 items-center font-medium"
-          onClick={onDisplayNewProductForm}
+          onClick={handleDisplayNewProductForm}
         >
           <IconPlus size="20" />
           Add A Product
