@@ -60,10 +60,3 @@ h6 {
 #__next {
   isolation: isolate;
 }
-
-body {
-  font-family: "Space Grotesk Variable", sans-serif;
-  background-color: #f7f6f5;
-  color: #030303;
-  /* font-family: sans-serif; */
-}

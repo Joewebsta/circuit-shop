@@ -3,7 +3,7 @@ import React, { useState } from "react";
 const AddForm = ({
   onDisplayNewProductForm,
   onHideNewProductForm,
-  isAddFormVisible,
+  // isAddFormVisible,
   onAddNewProduct,
 }) => {
   const [productTitle, setProductName] = useState("");
@@ -38,48 +38,68 @@ const AddForm = ({
   };
 
   return (
-    <div className={`add-form ${isAddFormVisible && "visible"}`}>
-      <h3>Add Product</h3>
+    <div className="bg-[#f7f6f5] w-[500px] m-auto mt-16 p-7 rounded-md">
+      <h3 className="text-lg font-medium mb-7">Add Product</h3>
       <form onSubmit={submitForm}>
-        <div className="input-group">
-          <label htmlFor="product-name">Product Name:</label>
-          <input
-            type="text"
-            id="product-name"
-            name="product-name"
-            value={productTitle}
-            onChange={handleProductNameChange}
-            required
-          />
+        <div className="flex flex-col gap-5 mb-7">
+          <div className="flex items-center">
+            <label className="w-32 inline-block" htmlFor="product-name">
+              Product Name:
+            </label>
+            <input
+              className="py-1 px-3 rounded-sm border border-[#e2dfdc] flex-grow"
+              type="text"
+              id="product-name"
+              name="product-name"
+              value={productTitle}
+              onChange={handleProductNameChange}
+              required
+            />
+          </div>
+          <div className="flex items-center">
+            <label className="w-32 inline-block" htmlFor="product-price">
+              Price:
+            </label>
+            <input
+              className="py-1 px-3 rounded-sm flex-grow border border-[#e2dfdc]"
+              type="number"
+              id="product-price"
+              name="product-price"
+              min="0"
+              step="0.01"
+              value={productPrice}
+              onChange={handleProductPriceChange}
+              required
+            />
+          </div>
+          <div className="flex items-center">
+            <label className="w-32 inline-block" htmlFor="product-quantity">
+              Quantity:
+            </label>
+            <input
+              className="py-1 px-3 rounded-sm border border-[#e2dfdc] flex-grow"
+              type="number"
+              id="product-quantity"
+              name="product-quantity"
+              min="0"
+              value={productQuantity}
+              onChange={handleProductQuantityChange}
+              required
+            />
+          </div>
         </div>
-        <div className="input-group">
-          <label htmlFor="product-price">Price:</label>
-          <input
-            type="number"
-            id="product-price"
-            name="product-price"
-            min="0"
-            step="0.01"
-            value={productPrice}
-            onChange={handleProductPriceChange}
-            required
-          />
-        </div>
-        <div className="input-group">
-          <label htmlFor="product-quantity">Quantity:</label>
-          <input
-            type="number"
-            id="product-quantity"
-            name="product-quantity"
-            min="0"
-            value={productQuantity}
-            onChange={handleProductQuantityChange}
-            required
-          />
-        </div>
-        <div className="actions form-actions">
-          <button type="submit">Add</button>
-          <button type="button" onClick={handleCancelButtonClick}>
+        <div className="flex gap-4">
+          <button
+            className="py-[5px] px-3 bg-[#030303] min-w-[110px] text-white font-medium rounded"
+            type="submit"
+          >
+            Add
+          </button>
+          <button
+            className="py-[5px] px-3 text font-medium"
+            type="button"
+            onClick={handleCancelButtonClick}
+          >
             Cancel
           </button>
         </div>

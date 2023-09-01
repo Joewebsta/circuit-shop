@@ -1,10 +1,11 @@
-import "./styles/index.css";
-import "./styles/reset.css";
+// import "./styles/index.css";
+// import "./styles/reset.css";
 import "@fontsource-variable/space-grotesk";
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import Header from "./components/Header";
 import Products from "./components/Products";
+import AddForm from "./components/AddForm";
 import Cart from "./components/Cart";
 import {
   getProducts,
@@ -131,20 +132,31 @@ const App = () => {
   const handleHideNewProductForm = () => setIsAddFormVisible(false);
 
   return (
-    <div className="w-[1280px] px-8 pb-8 pt-4 m-auto">
-      <Header />
-      <div className="flex gap-[50px]">
-        <Products
-          products={products}
-          onDisplayNewProductForm={handleDisplayNewProductForm}
-          isAddFormVisible={isAddFormVisible}
-          onHideNewProductForm={handleHideNewProductForm}
-          onEditProduct={handleEditProduct}
-          onAddNewProduct={handleAddNewProduct}
-          onDeleteProduct={handleDeleteProduct}
-          onAddProductToCart={handleAddProductToCart}
-        />
-        {/* <Cart items={cartItems} onCheckoutCart={handleCheckoutCart} /> */}
+    <div>
+      <div className="w-[1280px] px-8 pb-8 pt-4 m-auto">
+        <Header />
+        <div className="flex gap-[50px]">
+          <Products
+            products={products}
+            onDisplayNewProductForm={handleDisplayNewProductForm}
+            isAddFormVisible={isAddFormVisible}
+            onHideNewProductForm={handleHideNewProductForm}
+            onEditProduct={handleEditProduct}
+            onAddNewProduct={handleAddNewProduct}
+            onDeleteProduct={handleDeleteProduct}
+            onAddProductToCart={handleAddProductToCart}
+          />
+          {/* <Cart items={cartItems} onCheckoutCart={handleCheckoutCart} /> */}
+        </div>
+        <div className="bg-black absolute inset-0 bg-opacity-30">
+          {/* <div className="bg-black absolute inset-0 bg-opacity-50 flex justify-center items-center"> */}
+          <AddForm
+            onDisplayNewProductForm={handleDisplayNewProductForm}
+            onHideNewProductForm={handleHideNewProductForm}
+            onAddNewProduct={handleAddNewProduct}
+            // isAddFormVisible={isAddFormVisible}
+          />
+        </div>
       </div>
     </div>
   );
