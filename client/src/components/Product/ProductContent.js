@@ -8,9 +8,7 @@ const ProductBody = ({ productTitle, price, quantityInStock }) => {
         <p className="text-lg price font-medium">${price}</p>
       </div>
       <p
-        className={`quantity ${
-          !quantityInStock && "none-left"
-        } mb-8 text-[#5D534F]`}
+        className={`${!quantityInStock && "text-red-700"} mb-8 text-[#5D534F]`}
       >
         {quantityInStock} left in stock
       </p>
