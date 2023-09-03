@@ -140,7 +140,7 @@ const App = () => {
             handleDisplayNewProductForm={handleDisplayNewProductForm}
             handleAddProductToCart={handleAddProductToCart}
           />
-          {/* <Cart items={cartItems} onCheckoutCart={handleCheckoutCart} /> */}
+          <Cart items={cartItems} onCheckoutCart={handleCheckoutCart} />
         </div>
       </div>
       {isAddFormVisible && (

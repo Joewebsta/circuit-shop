@@ -8,12 +8,18 @@ const CartItemListing = ({ items }) => {
     }, 0);
 
   return (
-    <table className="cart-items">
+    <table className="w-[100%] mb-6" cellpadding="10">
       <thead>
         <tr>
-          <th scope="col">Item</th>
-          <th scope="col">Quantity</th>
-          <th scope="col">Price</th>
+          <th scope="col" className="text-left w-[63%]">
+            Product
+          </th>
+          <th scope="col" className="text-left">
+            Qty
+          </th>
+          <th scope="col" className="text-left">
+            Price
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -23,9 +29,10 @@ const CartItemListing = ({ items }) => {
       </tbody>
       <tfoot>
         <tr>
-          <td colSpan="3" className="total">
-            Total: ${total()}
+          <td colSpan="2" className="font-medium">
+            Total:
           </td>
+          <td className="font-medium">${total()}</td>
         </tr>
       </tfoot>
     </table>
