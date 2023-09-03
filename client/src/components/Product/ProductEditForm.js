@@ -5,7 +5,7 @@ const ProductEditForm = ({
   productTitle,
   price,
   quantityInStock,
-  onEditProduct,
+  handleEditProduct,
   onHandleCancelButtonClick,
   hideProductEditForm,
 }) => {
@@ -19,7 +19,7 @@ const ProductEditForm = ({
 
   const handleUpdateButtonClick = (e) => {
     e.preventDefault();
-    onEditProduct(
+    handleEditProduct(
       productId,
       newTitle,
       newPrice,

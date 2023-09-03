@@ -13,7 +13,7 @@ const ProductBody = ({ productTitle, price, quantityInStock }) => {
             !quantityInStock && "text-red-700"
           } mb-8 text-[#5D534F]`}
         >
-          {quantityInStock} left in stock
+          <span className="font-medium">{quantityInStock}</span> left in stock
         </p>
       </div>
     </>

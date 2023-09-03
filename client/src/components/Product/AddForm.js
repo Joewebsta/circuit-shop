@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 
 const AddForm = ({
-  onDisplayNewProductForm,
+  handleAddNewProduct,
   handleHideNewProductForm,
-  // isAddFormVisible,
-  onAddNewProduct,
 }) => {
   const [productTitle, setProductName] = useState("");
   const [productPrice, setProductPrice] = useState("");
@@ -20,7 +18,7 @@ const AddForm = ({
 
   const submitForm = (event) => {
     event.preventDefault();
-    onAddNewProduct(
+    handleAddNewProduct(
       productTitle,
       productPrice,
       productQuantity,

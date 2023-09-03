@@ -1,17 +1,13 @@
 import React from "react";
 import ProductsList from "./ProductsList";
-import AddForm from "./AddForm";
 import { IconPlus } from "@tabler/icons-react";
 
 const Products = ({
   products,
-  onDeleteProduct,
+  handleEditProduct,
+  handleDeleteProduct,
   handleDisplayNewProductForm,
-  onHideNewProductForm,
-  onAddNewProduct,
-  onEditProduct,
-  onAddProductToCart,
-  isAddFormVisible,
+  handleAddProductToCart,
 }) => {
   return (
     <main className="w-product">
@@ -27,9 +23,9 @@ const Products = ({
       </div>
       <ProductsList
         products={products}
-        onDeleteProduct={onDeleteProduct}
-        onEditProduct={onEditProduct}
-        onAddProductToCart={onAddProductToCart}
+        handleDeleteProduct={handleDeleteProduct}
+        handleEditProduct={handleEditProduct}
+        handleAddProductToCart={handleAddProductToCart}
       />
     </main>
   );

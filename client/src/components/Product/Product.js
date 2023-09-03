@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import ProductEditForm from "./Product/ProductEditForm";
-import ProductContent from "./Product/ProductContent";
-import ProductActions from "./Product/ProductActions";
+import ProductEditForm from "./ProductEditForm";
+import ProductContent from "./ProductContent";
+import ProductActions from "./ProductActions";
 import { IconTrash } from "@tabler/icons-react";
 
 const Product = ({
@@ -9,26 +9,26 @@ const Product = ({
   productTitle,
   price,
   quantityInStock,
-  onDeleteProduct,
-  onEditProduct,
-  onAddProductToCart,
+  handleEditProduct,
+  handleDeleteProduct,
+  handleAddProductToCart,
 }) => {
-  const [isEditFormVisible, setIsEditFormVisible] = useState(false);
+  const [isEditModeActive, setIsEditModeActive] = useState(false);
 
-  const handleEditButtonClick = () => setIsEditFormVisible(true);
+  const handleEditButtonClick = () => setIsEditModeActive(true);
   const handleCancelButtonClick = () => hideProductEditForm();
-  const hideProductEditForm = () => setIsEditFormVisible(false);
+  const hideProductEditForm = () => setIsEditModeActive(false);
 
   const handleDeleteButtonClick = (event) => {
     event.preventDefault();
-    onDeleteProduct(productId);
+    handleDeleteProduct(productId);
   };
 
   return (
     <li className="border-b border-[#BFB9B2] p-5 first:border-t">
       <div className="flex gap-5">
         <img
-          src="https://drive.google.com/uc?id=1mVDP9aSXNq45FXsjoM6kqcc3ry4K6eAC"
+          src="https://drive.google.com/uc?id=11gsyIIf5D-q92SIbRlkxcvn_DWo7p6vq"
           width="128px"
           alt=""
         />
@@ -41,31 +41,31 @@ const Product = ({
           <div className="flex justify-between items-center">
             <ProductActions
               onEditButtonClick={handleEditButtonClick}
-              isEditFormVisible={isEditFormVisible}
-              onAddProductToCart={onAddProductToCart}
+              isEditModeActive={isEditModeActive}
+              handleAddProductToCart={handleAddProductToCart}
               productId={productId}
               productTitle={productTitle}
               price={price}
               quantityInStock={quantityInStock}
             />
             <button className="delete-button" onClick={handleDeleteButtonClick}>
-              <IconTrash size={20} />
+              <IconTrash size={20} color="#888888" />
             </button>
           </div>
         </div>
       </div>
 
-      {isEditFormVisible ? (
+      {isEditModeActive && (
         <ProductEditForm
           productTitle={productTitle}
           price={price}
           quantityInStock={quantityInStock}
-          onEditProduct={onEditProduct}
+          handleEditProduct={handleEditProduct}
           productId={productId}
           onHandleCancelButtonClick={handleCancelButtonClick}
           hideProductEditForm={hideProductEditForm}
         />
-      ) : null}
+      )}
     </li>
   );
 };

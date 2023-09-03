@@ -1,13 +1,13 @@
 import React from "react";
-import Product from "./Product";
+import Product from "../Product/Product";
 
 const ProductsList = ({
   products,
-  onDeleteProduct,
-  onEditProduct,
-  onAddProductToCart,
+  handleEditProduct,
+  handleDeleteProduct,
+  handleAddProductToCart,
 }) => {
-  const productList = () => {
+  const renderProductsList = () => {
     return products.map((product) => {
       const { _id, title, quantity, price } = product;
       return (
@@ -17,9 +17,9 @@ const ProductsList = ({
           productTitle={title}
           price={price}
           quantityInStock={quantity}
-          onDeleteProduct={onDeleteProduct}
-          onEditProduct={onEditProduct}
-          onAddProductToCart={onAddProductToCart}
+          handleDeleteProduct={handleDeleteProduct}
+          handleEditProduct={handleEditProduct}
+          handleAddProductToCart={handleAddProductToCart}
         />
       );
     });
@@ -27,7 +27,7 @@ const ProductsList = ({
 
   return (
     <div>
-      <ul>{productList()}</ul>
+      <ul>{renderProductsList()}</ul>
     </div>
   );
 };

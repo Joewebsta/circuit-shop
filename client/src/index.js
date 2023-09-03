@@ -1,12 +1,10 @@
-// import "./styles/index.css";
-// import "./styles/reset.css";
 import "@fontsource-variable/space-grotesk";
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import Header from "./components/Header";
-import Products from "./components/Products";
-import Cart from "./components/Cart";
-import AddForm from "./components/AddForm";
+import Products from "./components/Products/Products";
+import Cart from "./components/Cart/Cart";
+import AddForm from "./components/Product/AddForm";
 import Overlay from "./components/Overlay";
 import {
   getProducts,
@@ -128,7 +126,6 @@ const App = () => {
   };
 
   const handleDisplayNewProductForm = () => setIsAddFormVisible(true);
-
   const handleHideNewProductForm = () => setIsAddFormVisible(false);
 
   return (
@@ -138,24 +135,19 @@ const App = () => {
         <div className="flex gap-[50px]">
           <Products
             products={products}
+            handleEditProduct={handleEditProduct}
+            handleDeleteProduct={handleDeleteProduct}
             handleDisplayNewProductForm={handleDisplayNewProductForm}
-            // isAddFormVisible={isAddFormVisible}
-            // onHideNewProductForm={handleHideNewProductForm}
-            onEditProduct={handleEditProduct}
-            // onAddNewProduct={handleAddNewProduct}
-            onDeleteProduct={handleDeleteProduct}
-            onAddProductToCart={handleAddProductToCart}
+            handleAddProductToCart={handleAddProductToCart}
           />
           {/* <Cart items={cartItems} onCheckoutCart={handleCheckoutCart} /> */}
         </div>
       </div>
       {isAddFormVisible && (
-        <Overlay handleHideNewProductForm={handleHideNewProductForm}>
+        <Overlay>
           <AddForm
-            onDisplayNewProductForm={handleDisplayNewProductForm}
+            handleAddNewProduct={handleAddNewProduct}
             handleHideNewProductForm={handleHideNewProductForm}
-            onAddNewProduct={handleAddNewProduct}
-            // isAddFormVisible={isAddFormVisible}
           />
         </Overlay>
       )}
