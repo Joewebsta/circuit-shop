@@ -26,24 +26,33 @@ const Product = ({
 
   return (
     <li className="border-b border-[#BFB9B2] p-5 first:border-t">
-      <ProductContent
-        productTitle={productTitle}
-        price={price}
-        quantityInStock={quantityInStock}
-      />
-      <div className="flex justify-between items-center">
-        <ProductActions
-          onEditButtonClick={handleEditButtonClick}
-          isEditFormVisible={isEditFormVisible}
-          onAddProductToCart={onAddProductToCart}
-          productId={productId}
-          productTitle={productTitle}
-          price={price}
-          quantityInStock={quantityInStock}
+      <div className="flex gap-5">
+        <img
+          src="https://drive.google.com/uc?id=1mVDP9aSXNq45FXsjoM6kqcc3ry4K6eAC"
+          width="128px"
+          alt=""
         />
-        <button className="delete-button" onClick={handleDeleteButtonClick}>
-          <IconTrash size={20} />
-        </button>
+        <div className="flex-1">
+          <ProductContent
+            productTitle={productTitle}
+            price={price}
+            quantityInStock={quantityInStock}
+          />
+          <div className="flex justify-between items-center">
+            <ProductActions
+              onEditButtonClick={handleEditButtonClick}
+              isEditFormVisible={isEditFormVisible}
+              onAddProductToCart={onAddProductToCart}
+              productId={productId}
+              productTitle={productTitle}
+              price={price}
+              quantityInStock={quantityInStock}
+            />
+            <button className="delete-button" onClick={handleDeleteButtonClick}>
+              <IconTrash size={20} />
+            </button>
+          </div>
+        </div>
       </div>
 
       {isEditFormVisible ? (
