@@ -9,6 +9,7 @@ const Product = ({
   productTitle,
   price,
   quantityInStock,
+  imageUrl,
   handleEditProduct,
   handleDeleteProduct,
   handleAddProductToCart,
@@ -24,14 +25,12 @@ const Product = ({
     handleDeleteProduct(productId);
   };
 
+  console.log(imageUrl);
+
   return (
     <li className="border-b border-[#BFB9B2] p-5 first:border-t">
       <div className="flex gap-5">
-        <img
-          src="https://drive.google.com/uc?id=11gsyIIf5D-q92SIbRlkxcvn_DWo7p6vq"
-          width="128px"
-          alt=""
-        />
+        <img src={imageUrl} width="128px" alt={`Image of ${productTitle}`} />
         <div className="flex-1">
           <ProductContent
             productTitle={productTitle}

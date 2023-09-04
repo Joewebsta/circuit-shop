@@ -42,17 +42,22 @@ const App = () => {
     getAllCartItems();
   }, []);
 
+  console.log(products);
+
   const handleAddNewProduct = async (
     name,
     price,
     quantity,
+    imageUrl,
     clearProductForm
   ) => {
     const newProduct = {
       title: name,
       price: parseInt(price, 10),
       quantity: parseInt(quantity, 10),
+      imageUrl,
     };
+
     const returnedNewProduct = await createProduct(newProduct);
     setProducts(products.concat(returnedNewProduct));
     clearProductForm();

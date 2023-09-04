@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 
-const AddForm = ({
-  handleAddNewProduct,
-  handleHideNewProductForm,
-}) => {
+const AddForm = ({ handleAddNewProduct, handleHideNewProductForm }) => {
   const [productTitle, setProductName] = useState("");
   const [productPrice, setProductPrice] = useState("");
   const [productQuantity, setProductQuantity] = useState("");
+  const [productImageURL, setProductImageURL] = useState("");
 
   const handleProductNameChange = (event) => setProductName(event.target.value);
 
@@ -16,12 +14,16 @@ const AddForm = ({
   const handleProductQuantityChange = (event) =>
     setProductQuantity(event.target.value);
 
+  const handleProductImageURLChange = (event) =>
+    setProductImageURL(event.target.value);
+
   const submitForm = (event) => {
     event.preventDefault();
     handleAddNewProduct(
       productTitle,
       productPrice,
       productQuantity,
+      productImageURL,
       clearProductForm
     );
 
@@ -81,11 +83,26 @@ const AddForm = ({
             <input
               className="py-1 px-3 rounded-sm border border-[#e2dfdc] flex-grow"
               type="number"
-              id="product-quantity"
-              name="product-quantity"
+              id="product-image-url"
+              name="product-image-url"
               min="0"
               value={productQuantity}
               onChange={handleProductQuantityChange}
+              required
+            />
+          </div>
+          <div className="flex items-center">
+            <label className="w-32 inline-block" htmlFor="product-quantity">
+              Image URL:
+            </label>
+            <input
+              className="py-1 px-3 rounded-sm border border-[#e2dfdc] flex-grow"
+              type="text"
+              id="product-quantity"
+              name="product-quantity"
+              min="0"
+              value={productImageURL}
+              onChange={handleProductImageURLChange}
               required
             />
           </div>
