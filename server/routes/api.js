@@ -99,8 +99,8 @@ router.get("/products", (req, res, next) => {
 });
 
 router.post("/products", (req, res, next) => {
-  const { title, price, quantity } = req.body;
-  Product.create({ title, price, quantity })
+  const { title, price, quantity, imageUrl } = req.body;
+  Product.create({ title, price, quantity, imageUrl })
     .then((product) => res.json(product))
     .catch((err) => next(err));
 });

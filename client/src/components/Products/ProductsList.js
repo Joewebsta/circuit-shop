@@ -9,7 +9,7 @@ const ProductsList = ({
 }) => {
   const renderProductsList = () => {
     return products.map((product) => {
-      const { _id, title, quantity, price } = product;
+      const { _id, title, quantity, price, imageUrl } = product;
       return (
         <Product
           key={_id}
@@ -17,6 +17,7 @@ const ProductsList = ({
           productTitle={title}
           price={price}
           quantityInStock={quantity}
+          imageUrl={imageUrl}
           handleDeleteProduct={handleDeleteProduct}
           handleEditProduct={handleEditProduct}
           handleAddProductToCart={handleAddProductToCart}
