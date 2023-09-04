@@ -8,7 +8,7 @@ const CartItemListing = ({ items }) => {
     }, 0);
 
   return (
-    <table className="w-[100%] mb-6" cellpadding="10">
+    <table className="w-[100%] mb-6" cellPadding="10">
       <thead>
         <tr>
           <th scope="col" className="text-left w-[63%]">
@@ -32,7 +32,7 @@ const CartItemListing = ({ items }) => {
           <td colSpan="2" className="font-medium">
             Total:
           </td>
-          <td className="font-medium">${total()}</td>
+          <td className="font-medium">${total().toLocaleString()}</td>
         </tr>
       </tfoot>
     </table>

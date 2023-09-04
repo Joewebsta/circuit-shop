@@ -6,7 +6,7 @@ const ProductBody = ({ productTitle, price, quantityInStock }) => {
       <div>
         <div className="flex justify-between mb-4">
           <h3 className="text-lg font-medium">{productTitle}</h3>
-          <p className="text-lg price font-medium">${price}</p>
+          <p className="text-lg price font-medium">${price.toLocaleString()}</p>
         </div>
         <p
           className={`${

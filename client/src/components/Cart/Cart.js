@@ -9,9 +9,11 @@ const Cart = ({ items, onCheckoutCart }) => {
         <IconShoppingCart size="26px" stroke="2.5" />
         <h2 className="text-3xl font-bold">Cart</h2>
       </div>
-      <div className="bg-[#ECEAE8] pt-[14px] px-6 pb-6">
+      <div className="bg-[#ECEAE8] pt-[14px] px-6 pb-6 min-h-[229px]">
         {items.length == 0 ? (
-          <p>"Your cart is empty"</p>
+          <p className="text-center font-medium mt-[10px]">
+            Your cart is empty
+          </p>
         ) : (
           <div>
             <CartItemListing items={items} />
