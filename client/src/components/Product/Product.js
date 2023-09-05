@@ -59,6 +59,7 @@ const Product = ({
           productTitle={productTitle}
           price={price}
           quantityInStock={quantityInStock}
+          imageUrl={imageUrl}
           handleEditProduct={handleEditProduct}
           productId={productId}
           onHandleCancelButtonClick={handleCancelButtonClick}

@@ -5,6 +5,7 @@ const ProductEditForm = ({
   productTitle,
   price,
   quantityInStock,
+  imageUrl,
   handleEditProduct,
   onHandleCancelButtonClick,
   hideProductEditForm,
@@ -12,10 +13,12 @@ const ProductEditForm = ({
   const [newTitle, setNewTitle] = useState(productTitle);
   const [newPrice, setNewPrice] = useState(price);
   const [newQuantity, setNewQuantity] = useState(quantityInStock);
+  const [newImageUrl, setNewImageUrl] = useState(imageUrl);
 
   const handleNewTitleChange = (event) => setNewTitle(event.target.value);
   const handleNewPriceChange = (event) => setNewPrice(event.target.value);
   const handleNewQuantityChange = (event) => setNewQuantity(event.target.value);
+  const handleNewImageUrlChange = (event) => setNewImageUrl(event.target.value);
 
   const handleUpdateButtonClick = (e) => {
     e.preventDefault();
@@ -24,6 +27,7 @@ const ProductEditForm = ({
       newTitle,
       newPrice,
       newQuantity,
+      newImageUrl,
       resetProductEditForm
     );
     hideProductEditForm();
@@ -51,6 +55,7 @@ const ProductEditForm = ({
               value={newTitle}
               aria-label="Product Name"
               onChange={handleNewTitleChange}
+              required
             />
           </div>
 
@@ -65,6 +70,7 @@ const ProductEditForm = ({
               value={newPrice}
               aria-label="Product Price"
               onChange={handleNewPriceChange}
+              required
             />
           </div>
 
@@ -82,6 +88,25 @@ const ProductEditForm = ({
               value={newQuantity}
               aria-label="Product Quantity"
               onChange={handleNewQuantityChange}
+              required
+            />
+          </div>
+
+          <div className="input-group">
+            <label
+              className="inline-block w-[140px]"
+              htmlFor="product-image-url"
+            >
+              Image URL
+            </label>
+            <input
+              type="text"
+              className="py-1 px-3 rounded-sm"
+              id="product-image-url"
+              value={newImageUrl}
+              aria-label="Product Image URL"
+              onChange={handleNewImageUrlChange}
+              required
             />
           </div>
         </div>

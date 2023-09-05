@@ -42,8 +42,6 @@ const App = () => {
     getAllCartItems();
   }, []);
 
-  console.log(products);
-
   const handleAddNewProduct = async (
     name,
     price,
@@ -68,13 +66,17 @@ const App = () => {
     newTitle,
     newPrice,
     newQuantity,
+    newImageUrl,
     callback
   ) => {
     const updatedProduct = {
       title: newTitle,
       price: newPrice,
       quantity: newQuantity,
+      imageUrl: newImageUrl,
     };
+
+    console.log(newImageUrl);
 
     await updateProduct(productId, updatedProduct);
 
@@ -86,6 +88,7 @@ const App = () => {
               title: newTitle,
               quantity: newQuantity,
               price: newPrice,
+              imageUrl: newImageUrl,
             }
           : product;
       })

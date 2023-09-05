@@ -83,8 +83,8 @@ const AddForm = ({ handleAddNewProduct, handleHideNewProductForm }) => {
             <input
               className="py-1 px-3 rounded-sm border border-[#e2dfdc] flex-grow"
               type="number"
-              id="product-image-url"
-              name="product-image-url"
+              id="product-quantity"
+              name="product-quantity"
               min="0"
               value={productQuantity}
               onChange={handleProductQuantityChange}
@@ -98,8 +98,8 @@ const AddForm = ({ handleAddNewProduct, handleHideNewProductForm }) => {
             <input
               className="py-1 px-3 rounded-sm border border-[#e2dfdc] flex-grow"
               type="text"
-              id="product-quantity"
-              name="product-quantity"
+              id="product-image-url"
+              name="product-image-url"
               min="0"
               value={productImageURL}
               onChange={handleProductImageURLChange}
