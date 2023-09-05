@@ -76,8 +76,6 @@ const App = () => {
       imageUrl: newImageUrl,
     };
 
-    console.log(newImageUrl);
-
     await updateProduct(productId, updatedProduct);
 
     setProducts(
@@ -93,7 +91,6 @@ const App = () => {
           : product;
       })
     );
-    //need put cart endpoint: setCartItems(cartItems.map(item => item.productId === productId ? { ...item, title: newTitle, price: parseInt(newPrice, 10) } : item));
 
     callback();
   };
