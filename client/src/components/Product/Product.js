@@ -25,8 +25,6 @@ const Product = ({
     handleDeleteProduct(productId);
   };
 
-  console.log(imageUrl);
-
   return (
     <li className="border-b border-[#BFB9B2] p-5 first:border-t">
       <div className="flex gap-5">
@@ -47,7 +45,11 @@ const Product = ({
               price={price}
               quantityInStock={quantityInStock}
             />
-            <button className="delete-button" onClick={handleDeleteButtonClick}>
+            <button
+              className="delete-button"
+              onClick={handleDeleteButtonClick}
+              data-testid="delete-button"
+            >
               <IconTrash size={20} color="#888888" />
             </button>
           </div>
