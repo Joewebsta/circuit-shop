@@ -92,7 +92,7 @@ const AddForm = ({ handleAddNewProduct, handleHideNewProductForm }) => {
             />
           </div>
           <div className="flex items-center">
-            <label className="w-32 inline-block" htmlFor="product-quantity">
+            <label className="w-32 inline-block" htmlFor="product-image-url">
               Image URL:
             </label>
             <input

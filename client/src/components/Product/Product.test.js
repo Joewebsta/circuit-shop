@@ -55,7 +55,7 @@ describe("Product", () => {
     expect(deleteButton).toBeInTheDocument();
   });
 
-  test("handleDeleteProduct handler is called", async () => {
+  test("handleDeleteProduct is called", async () => {
     render(<Product {...productProps} />);
 
     const deleteButton = screen.getByTestId("delete-button");
