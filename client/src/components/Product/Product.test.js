@@ -4,23 +4,27 @@
 
 import React from "react";
 import "@testing-library/jest-dom";
+import user from "@testing-library/user-event";
 import { render, screen } from "@testing-library/react";
 import Product from "./Product";
 
 describe("Product", () => {
+  const productProps = {
+    productId: 1,
+    productTitle: "DJI Air 2S",
+    price: 1299.99,
+    quantityInStock: 100,
+    imageUrl:
+      "https://drive.google.com/uc?id=1Ss1U77zQGUH77ggxTSUTQs0_bXturydZ",
+    handleAddProductToCart: jest.fn(),
+    handleDeleteProduct: jest.fn(),
+    handleEditProduct: jest.fn(),
+  };
+
+  beforeEach(() => jest.resetAllMocks());
+
   test("renders correctly", () => {
-    render(
-      <Product
-        productId={1}
-        productTitle="DJI Air 2S"
-        price={1299.99}
-        quantityInStock={100}
-        imageUrl="https://drive.google.com/uc?id=1Ss1U77zQGUH77ggxTSUTQs0_bXturydZ"
-        handleAddProductToCart={() => {}}
-        handleDeleteProduct={() => {}}
-        handleEditProduct={() => {}}
-      />
-    );
+    render(<Product {...productProps} />);
 
     const imgElement = screen.getByRole("img", {
       name: /image of dji air 2s/i,
@@ -51,7 +55,32 @@ describe("Product", () => {
     expect(deleteButton).toBeInTheDocument();
   });
 
-  // Click "Add to Cart"
-  // Click "Edit"
-  // Click Trashcan
+  test("handleDeleteProduct handler is called", async () => {
+    render(<Product {...productProps} />);
+
+    const deleteButton = screen.getByTestId("delete-button");
+
+    await user.click(deleteButton);
+    expect(productProps.handleDeleteProduct).toHaveBeenCalledTimes(1);
+  });
+
+  test("edit button click displays the product edit form", async () => {
+    user.setup();
+    render(<Product {...productProps} />);
+
+    const editButton = screen.getByRole("button", { name: /edit/i });
+    await user.click(editButton);
+
+    const formElement = screen.getByTestId("editProductForm");
+    const headerElement = screen.getByRole("heading", {
+      name: /edit product/i,
+    });
+    const updateButton = screen.getByRole("button", { name: /update/i });
+    const cancelButton = screen.getByRole("button", { name: /cancel/i });
+
+    expect(updateButton).toBeInTheDocument();
+    expect(cancelButton).toBeInTheDocument();
+    expect(formElement).toBeInTheDocument();
+    expect(headerElement).toBeInTheDocument();
+  });
 });

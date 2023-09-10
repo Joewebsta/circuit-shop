@@ -40,7 +40,10 @@ const ProductEditForm = ({
   };
 
   return (
-    <div className="edit-form bg-[#ECEAE8] mt-5 p-5 shadow-inner">
+    <div
+      className="edit-form bg-[#ECEAE8] mt-5 p-5 shadow-inner"
+      data-testid="editProductForm"
+    >
       <h3 className="font-medium mb-6">Edit Product</h3>
       <form className="gap-3">
         <div className="flex flex-col gap-3 mb-6">
