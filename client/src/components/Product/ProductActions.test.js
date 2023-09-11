@@ -5,67 +5,92 @@
 import React from "react";
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import user from "@testing-library/user-event";
 import ProductActions from "./ProductActions";
 
-test("test", () => {
-  expect(1).toBe(1);
+describe("ProductActions", () => {
+  const productActionsProps = {
+    productId: 1,
+    productTitle: "DJI Air 2S",
+    price: 1299.99,
+    quantityInStock: 100,
+    handleEditButtonClick: jest.fn(),
+    handleAddProductToCart: jest.fn(),
+  };
+
+  beforeEach(() => {
+    jest.resetAllMocks();
+  });
+
+  test("renders correctly when edit mode is inactive", () => {
+    render(
+      <ProductActions {...productActionsProps} isEditModeActive={false} />
+    );
+
+    const addButton = screen.getByRole("button", { name: /add to cart/i });
+    const editButton = screen.getByRole("button", { name: /edit/i });
+
+    expect(addButton).toBeInTheDocument();
+    expect(editButton).toBeInTheDocument();
+  });
+
+  test("renders correctly when edit mode is active", () => {
+    render(<ProductActions {...productActionsProps} isEditModeActive={true} />);
+
+    const addButton = screen.getByRole("button", { name: /add to cart/i });
+    const editButton = screen.queryByText(/edit/i);
+
+    expect(addButton).toBeInTheDocument();
+    expect(editButton).not.toBeInTheDocument();
+  });
+
+  test("handleEditButtonClick is called ", async () => {
+    user.setup();
+
+    render(
+      <ProductActions {...productActionsProps} isEditModeActive={false} />
+    );
+
+    const editButton = screen.getByRole("button", { name: /edit/i });
+    expect(editButton).toBeInTheDocument();
+
+    await user.click(editButton);
+
+    expect(productActionsProps.handleEditButtonClick).toHaveBeenCalledTimes(1);
+  });
+
+  test("handleAddProductToCart is called ", async () => {
+    user.setup();
+
+    render(
+      <ProductActions {...productActionsProps} isEditModeActive={false} />
+    );
+
+    const addButton = screen.getByRole("button", { name: /add to cart/i });
+    expect(addButton).toBeInTheDocument();
+
+    await user.click(addButton);
+
+    expect(productActionsProps.handleAddProductToCart).toHaveBeenCalledTimes(1);
+    expect(productActionsProps.handleAddProductToCart).toHaveBeenCalledWith(
+      1,
+      "DJI Air 2S",
+      1299.99,
+      100
+    );
+  });
+
+  test('disables "Add to Cart" button when quantityInStock is zero', () => {
+    render(
+      <ProductActions
+        {...productActionsProps}
+        isEditModeActive={false}
+        quantityInStock={0}
+      />
+    );
+
+    const addButton = screen.getByRole("button", { name: /add to cart/i });
+    expect(addButton).toBeInTheDocument();
+    expect(addButton).toBeDisabled();
+  });
 });
-
-// const item = {
-//   title: "iPhone",
-//   quantity: 100,
-//   price: 100,
-// };
-
-// Edit button
-
-// test('Edit button does not render when isEditFormVisible is true', () => {
-//   render(<ProductActions isEditFormVisible={true} />);
-//   const editButton = (screen.queryByRole('button', {name: 'Edit'}));
-//   expect(editButton).toBeNull();
-// });
-
-// test('Edit button renders when isEditFormVisible is false', () => {
-//   render(<ProductActions isEditFormVisible={false} />);
-//   const editButton = (screen.queryByRole('button', {name: 'Edit'}));
-//   expect(editButton).toBeInTheDocument();
-// });
-
-// test('function called on clicking Edit button', async () => {
-//   const mockFunction = jest.fn();
-//   render(<ProductActions onEditButtonClick={mockFunction} isEditFormVisible={false} />);
-//   const user = userEvent.setup();
-//   const editButton = (screen.queryByRole('button', {name: 'Edit'}));
-//   await user.click(editButton);
-//   expect(mockFunction.mock.calls.length).toBe(1);
-// });
-
-// // Add to Cart button
-
-// test('Add to Cart button disabled when isEditFormVisible is true', () => {
-//   render(<ProductActions isEditFormVisible={true} />);
-//   const addToCartButton = (screen.queryByRole('button', {name: 'Add to Cart'}));
-//   expect(addToCartButton).toHaveAttribute('disabled');
-// });
-
-// test('Add to Cart button disabled when 0 quantity in stock', () => {
-//   render(<ProductActions quantityInStock={0} />);
-//   const addToCartButton = (screen.queryByRole('button', {name: 'Add to Cart'}));
-//   expect(addToCartButton).toHaveAttribute('disabled');
-// });
-
-// test('Add to Cart button enabled when nonzero quantity in stock and edit form not visible', () => {
-//   render(<ProductActions quantityInStock={1} isEditFormVisible={false} />);
-//   const addToCartButton = (screen.queryByRole('button', {name: 'Add to Cart'}));
-//   expect(addToCartButton).not.toHaveAttribute('disabled');
-// });
-
-// test('function called on clicking Add to Cart button', async () => {
-//   const mockFunction = jest.fn();
-//   render(<ProductActions onAddProductToCart={mockFunction} quantityInStock={1} isEditFormVisible={false} />);
-//   const user = userEvent.setup();
-//   const addToCartButton = (screen.queryByRole('button', {name: 'Add to Cart'}));
-//   await user.click(addToCartButton);
-//   expect(mockFunction.mock.calls.length).toBe(1);
-// });

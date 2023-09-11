@@ -5,7 +5,7 @@ const ProductActions = ({
   productTitle,
   price,
   quantityInStock,
-  onEditButtonClick,
+  handleEditButtonClick,
   handleAddProductToCart,
   isEditModeActive,
 }) => {
@@ -28,7 +28,7 @@ const ProductActions = ({
       {!isEditModeActive && (
         <button
           className="py-[5px] px-3 text font-medium"
-          onClick={onEditButtonClick}
+          onClick={handleEditButtonClick}
         >
           Edit
         </button>

@@ -39,6 +39,7 @@ const AddForm = ({ handleAddNewProduct, handleHideNewProductForm }) => {
     setProductName("");
     setProductPrice("");
     setProductQuantity("");
+    setProductImageURL("");
   };
 
   return (

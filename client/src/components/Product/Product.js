@@ -37,7 +37,7 @@ const Product = ({
           />
           <div className="flex justify-between items-center">
             <ProductActions
-              onEditButtonClick={handleEditButtonClick}
+              handleEditButtonClick={handleEditButtonClick}
               isEditModeActive={isEditModeActive}
               handleAddProductToCart={handleAddProductToCart}
               productId={productId}
