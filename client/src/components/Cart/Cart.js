@@ -2,7 +2,7 @@ import React from "react";
 import CartItemListing from "./CartItemListing";
 import { IconShoppingCart } from "@tabler/icons-react";
 
-const Cart = ({ items, onCheckoutCart }) => {
+const Cart = ({ items, handleCheckoutCart }) => {
   return (
     <div className="flex-1 rounded">
       <div className="mb-5 flex items-center gap-2">
@@ -19,7 +19,7 @@ const Cart = ({ items, onCheckoutCart }) => {
             <CartItemListing items={items} />
             <button
               className="py-[5px] px-3 w-full bg-[#030303] text-white font-medium rounded"
-              onClick={onCheckoutCart}
+              onClick={handleCheckoutCart}
               disabled={!items.length}
             >
               Checkout
