@@ -27,7 +27,6 @@ describe("CartItem", () => {
         </tbody>
       </table>
     );
-    // screen.debug();
 
     const productName = screen.getByRole("cell", { name: /DJI Air 2S/i });
     expect(productName).toBeInTheDocument();
