@@ -51,7 +51,5 @@ describe("CartItemListing", () => {
       name: /\$3,899.97/i,
     });
     expect(productTotalAmount).toBeInTheDocument();
-
-    screen.debug();
   });
 });
