@@ -17,7 +17,7 @@ const Products = ({
           className="flex gap-2 items-center font-medium"
           onClick={handleDisplayNewProductForm}
         >
-          <IconPlus size="20" />
+          <IconPlus size="20" data-testid="products-plus-icon"/>
           Add A Product
         </button>
       </div>
