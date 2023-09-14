@@ -9,6 +9,8 @@ import { render, screen } from "@testing-library/react";
 import Product from "./Product";
 
 describe("Product", () => {
+  beforeEach(() => jest.resetAllMocks());
+
   const productProps = {
     productId: 1,
     productTitle: "DJI Air 2S",
@@ -20,8 +22,6 @@ describe("Product", () => {
     handleDeleteProduct: jest.fn(),
     handleEditProduct: jest.fn(),
   };
-
-  beforeEach(() => jest.resetAllMocks());
 
   test("renders correctly", () => {
     render(<Product {...productProps} />);
@@ -53,6 +53,8 @@ describe("Product", () => {
 
     const deleteButton = screen.getByTestId("delete-button");
     expect(deleteButton).toBeInTheDocument();
+
+    screen.debug();
   });
 
   test("handleDeleteProduct is called", async () => {
@@ -82,5 +84,17 @@ describe("Product", () => {
     expect(cancelButton).toBeInTheDocument();
     expect(formElement).toBeInTheDocument();
     expect(headerElement).toBeInTheDocument();
+  });
+
+  test("handleAddProductToCart is called", async () => {
+    user.setup();
+    render(<Product {...productProps} />);
+
+    const addToCartButton = screen.getByRole("button", {
+      name: /add to cart/i,
+    });
+
+    await user.click(addToCartButton);
+    expect(productProps.handleAddProductToCart).toHaveBeenCalledTimes(1);
   });
 });

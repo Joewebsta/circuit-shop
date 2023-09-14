@@ -7,7 +7,7 @@ const ProductEditForm = ({
   quantityInStock,
   imageUrl,
   handleEditProduct,
-  onHandleCancelButtonClick,
+  handleCancelButtonClick,
   hideProductEditForm,
 }) => {
   const [newTitle, setNewTitle] = useState(productTitle);
@@ -22,14 +22,8 @@ const ProductEditForm = ({
 
   const handleUpdateButtonClick = (e) => {
     e.preventDefault();
-    handleEditProduct(
-      productId,
-      newTitle,
-      newPrice,
-      newQuantity,
-      newImageUrl,
-      resetProductEditForm
-    );
+    handleEditProduct(productId, newTitle, newPrice, newQuantity, newImageUrl);
+    resetProductEditForm();
     hideProductEditForm();
   };
 
@@ -125,7 +119,7 @@ const ProductEditForm = ({
           <button
             type="button"
             className="py-[5px] px-3 text font-medium"
-            onClick={onHandleCancelButtonClick}
+            onClick={handleCancelButtonClick}
           >
             Cancel
           </button>

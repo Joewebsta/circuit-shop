@@ -85,8 +85,7 @@ describe("AddForm", () => {
       "New product",
       "100",
       "100",
-      "https://drive.google.com/uc?id=1Ss1U77zQGUH77ggxTSUTQs0_bXturydZ",
-      expect.any(Function)
+      "https://drive.google.com/uc?id=1Ss1U77zQGUH77ggxTSUTQs0_bXturydZ"
     );
     expect(formProps.handleAddNewProduct).toHaveBeenCalledTimes(1);
   });

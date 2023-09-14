@@ -64,7 +64,7 @@ const Product = ({
           imageUrl={imageUrl}
           handleEditProduct={handleEditProduct}
           productId={productId}
-          onHandleCancelButtonClick={handleCancelButtonClick}
+          handleCancelButtonClick={handleCancelButtonClick}
           hideProductEditForm={hideProductEditForm}
         />
       )}

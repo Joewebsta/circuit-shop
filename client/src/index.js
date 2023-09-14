@@ -42,13 +42,7 @@ const App = () => {
     getAllCartItems();
   }, []);
 
-  const handleAddNewProduct = async (
-    name,
-    price,
-    quantity,
-    imageUrl,
-    clearProductForm
-  ) => {
+  const handleAddNewProduct = async (name, price, quantity, imageUrl) => {
     const newProduct = {
       title: name,
       price: parseInt(price, 10),
@@ -58,7 +52,6 @@ const App = () => {
 
     const returnedNewProduct = await createProduct(newProduct);
     setProducts(products.concat(returnedNewProduct));
-    clearProductForm();
   };
 
   const handleEditProduct = async (
@@ -66,8 +59,7 @@ const App = () => {
     newTitle,
     newPrice,
     newQuantity,
-    newImageUrl,
-    callback
+    newImageUrl
   ) => {
     const updatedProduct = {
       title: newTitle,
@@ -91,8 +83,6 @@ const App = () => {
           : product;
       })
     );
-
-    callback();
   };
 
   const handleDeleteProduct = async (productId) => {

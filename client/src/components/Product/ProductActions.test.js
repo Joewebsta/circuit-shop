@@ -9,6 +9,10 @@ import user from "@testing-library/user-event";
 import ProductActions from "./ProductActions";
 
 describe("ProductActions", () => {
+  beforeEach(() => {
+    jest.resetAllMocks();
+  });
+
   const productActionsProps = {
     productId: 1,
     productTitle: "DJI Air 2S",
@@ -17,10 +21,6 @@ describe("ProductActions", () => {
     handleEditButtonClick: jest.fn(),
     handleAddProductToCart: jest.fn(),
   };
-
-  beforeEach(() => {
-    jest.resetAllMocks();
-  });
 
   test("renders correctly when edit mode is inactive", () => {
     render(

@@ -23,10 +23,10 @@ const AddForm = ({ handleAddNewProduct, handleHideNewProductForm }) => {
       productTitle,
       productPrice,
       productQuantity,
-      productImageURL,
-      clearProductForm
+      productImageURL
     );
 
+    clearProductForm();
     handleHideNewProductForm();
   };
 
