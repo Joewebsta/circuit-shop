@@ -53,8 +53,6 @@ describe("Product", () => {
 
     const deleteButton = screen.getByTestId("delete-button");
     expect(deleteButton).toBeInTheDocument();
-
-    screen.debug();
   });
 
   test("handleDeleteProduct is called", async () => {
