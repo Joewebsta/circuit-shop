@@ -4,12 +4,14 @@
 
 import React from "react";
 import "@testing-library/jest-dom";
-import { render, screen } from "@testing-library/react";
+import { render, screen, act } from "@testing-library/react";
 import user from "@testing-library/user-event";
 import App from "./App";
 
 describe("App", () => {
-  beforeEach(() => render(<App />));
+  beforeEach(async () => {
+    await act(async () => render(<App />));
+  });
 
   test("renders App component", async () => {
     const circuitShopHeader = screen.getByText(/circuit shop/i);
@@ -129,5 +131,18 @@ describe("App", () => {
 
     const updatedProductQty = screen.getByText(/1000/);
     expect(updatedProductQty).toBeInTheDocument();
+  });
+
+  test("deletes a product", async () => {
+    user.setup();
+
+    const productListItems = await screen.findAllByRole("listitem");
+    expect(productListItems).toHaveLength(2);
+
+    const firstDeleteIcon = (await screen.findAllByTestId("delete-button"))[0];
+    await user.click(firstDeleteIcon);
+
+    const updatedProductListItems = await screen.findAllByRole("listitem");
+    expect(updatedProductListItems).toHaveLength(1);
   });
 });

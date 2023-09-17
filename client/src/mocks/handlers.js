@@ -1,6 +1,5 @@
 import { rest } from "msw";
 
-const BASE_URL = "http://localhost:5001/api";
 const returnedProducts = [
   {
     _id: "64f609940669a9a57b74dfb4",
@@ -75,7 +74,7 @@ export const handlers = [
       ctx.json({
         _id: "64f609940669a9a57b74dfb4",
         title: "DJI Air 3S",
-        price: 1300.00,
+        price: 1300.0,
         quantity: 1000,
         imageUrl:
           "https://drive.google.com/uc?id=1Ss1U77zQGUH77ggxTSUTQs0_bXturydZ",
@@ -84,6 +83,9 @@ export const handlers = [
         __v: 0,
       })
     );
+  }),
+  rest.delete("/api/products/:id", (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json({}));
   }),
   rest.get("/api/cart", (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(returnedCartItems));
