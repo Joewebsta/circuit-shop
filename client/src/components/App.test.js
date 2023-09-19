@@ -5,7 +5,7 @@
 import React from "react";
 import "@testing-library/jest-dom";
 import { render, screen, act } from "@testing-library/react";
-import user from "@testing-library/user-event";
+import userEvent from "@testing-library/user-event";
 import App from "./App";
 
 describe("App", () => {
@@ -23,12 +23,8 @@ describe("App", () => {
     expect(products).toHaveLength(2);
   });
 
-  test.skip("should log an error if fetching products fails", async () => {
-    render(<App />);
-  });
-
   test("adds a new product", async () => {
-    user.setup();
+    userEvent.setup();
 
     const initialProductListItems = await screen.findAllByRole("listitem");
     expect(initialProductListItems).toHaveLength(2);
@@ -36,32 +32,32 @@ describe("App", () => {
     const addProductButton = screen.getByRole("button", {
       name: /add a product/i,
     });
-    await user.click(addProductButton);
+    await userEvent.click(addProductButton);
 
     const nameInput = await screen.findByRole("textbox", {
       name: /product name/i,
     });
-    await user.type(nameInput, "New Product");
+    await userEvent.type(nameInput, "New Product");
 
     const priceInput = await screen.findByRole("spinbutton", {
       name: /price/i,
     });
-    await user.type(priceInput, "10");
+    await userEvent.type(priceInput, "10");
 
     const quantityInput = await screen.findByRole("spinbutton", {
       name: /quantity/i,
     });
-    await user.type(quantityInput, "10");
+    await userEvent.type(quantityInput, "10");
 
     const imageUrlInput = await screen.findByRole("textbox", {
       name: /image url/i,
     });
-    await user.type(imageUrlInput, "https://example.com/image.jpg");
+    await userEvent.type(imageUrlInput, "https://example.com/image.jpg");
 
     const addButton = await screen.findByRole("button", {
       name: /^add$/i,
     });
-    await user.click(addButton);
+    await userEvent.click(addButton);
 
     const newProductName = await screen.findByText("iPhone 14");
     expect(newProductName).toBeInTheDocument();
@@ -82,7 +78,7 @@ describe("App", () => {
   });
 
   test("edits a product", async () => {
-    user.setup();
+    userEvent.setup();
 
     const firstEditButton = (
       await screen.findAllByRole("button", {
@@ -90,36 +86,36 @@ describe("App", () => {
       })
     )[0];
 
-    await user.click(firstEditButton);
+    await userEvent.click(firstEditButton);
 
     const nameInput = await screen.getByRole("textbox", {
       name: /product name/i,
     });
-    await user.clear(nameInput);
-    await user.type(nameInput, "DJI Air 3S");
+    await userEvent.clear(nameInput);
+    await userEvent.type(nameInput, "DJI Air 3S");
 
     const priceInput = screen.getByRole("spinbutton", { name: /price/i });
     expect(priceInput).toBeInTheDocument();
-    await user.clear(priceInput);
-    await user.type(priceInput, "1200");
+    await userEvent.clear(priceInput);
+    await userEvent.type(priceInput, "1200");
 
     const quantityInput = await screen.getByRole("spinbutton", {
       name: /quantity/i,
     });
-    await user.clear(quantityInput);
-    await user.type(quantityInput, "1000");
+    await userEvent.clear(quantityInput);
+    await userEvent.type(quantityInput, "1000");
 
     const imageUrlInput = await screen.getByRole("textbox", {
       name: /image url/i,
     });
-    await user.clear(imageUrlInput);
-    await user.type(
+    await userEvent.clear(imageUrlInput);
+    await userEvent.type(
       imageUrlInput,
       "https://drive.google.com/uc?id=1nr2NpnyMdKnoHk1rfWAyQX7gj8A2Nms4"
     );
 
     const updateButton = await screen.findByRole("button", { name: /update/i });
-    await user.click(updateButton);
+    await userEvent.click(updateButton);
 
     const updatedProductName = await screen.findByRole("heading", {
       name: /DJI Air 3S/i,
@@ -134,20 +130,20 @@ describe("App", () => {
   });
 
   test("deletes a product", async () => {
-    user.setup();
+    userEvent.setup();
 
     const productListItems = await screen.findAllByRole("listitem");
     expect(productListItems).toHaveLength(2);
 
     const firstDeleteIcon = (await screen.findAllByTestId("delete-button"))[0];
-    await user.click(firstDeleteIcon);
+    await userEvent.click(firstDeleteIcon);
 
     const updatedProductListItems = await screen.findAllByRole("listitem");
     expect(updatedProductListItems).toHaveLength(1);
   });
 
   test("adds product to cart", async () => {
-    user.setup;
+    userEvent.setup;
 
     const cartItemQty = screen.getByRole("cell", { name: /^2$/i });
     expect(cartItemQty).toBeInTheDocument();
@@ -159,7 +155,7 @@ describe("App", () => {
       name: /add to cart/i,
     })[0];
 
-    await user.click(metaQuestAddToCartButton);
+    await userEvent.click(metaQuestAddToCartButton);
 
     const updatedCartItemQty = screen.getByRole("cell", { name: /^3$/i });
     expect(updatedCartItemQty).toBeInTheDocument();
@@ -168,5 +164,18 @@ describe("App", () => {
       name: /\$899\.97/i,
     });
     expect(updatedCartTotalAmount).toBeInTheDocument();
+  });
+
+  test("checkout clears the cart items", async () => {
+    userEvent.setup();
+
+    const cartEmptyStateElement = screen.queryByText(/your cart is empty/i);
+    expect(cartEmptyStateElement).not.toBeInTheDocument();
+
+    const checkoutButton = screen.getByRole("button", { name: /checkout/i });
+    await userEvent.click(checkoutButton);
+
+    const cartEmptyStateElement2 = screen.queryByText(/your cart is empty/i);
+    expect(cartEmptyStateElement2).toBeInTheDocument();
   });
 });
