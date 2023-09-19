@@ -1,4 +1,4 @@
-import "@fontsource-variable/space-grotesk";
+// import "@fontsource-variable/space-grotesk";
 import React, { useState, useEffect } from "react";
 import Header from "./Header";
 import Products from "./Products/Products";
@@ -93,7 +93,13 @@ const App = () => {
 
   const handleAddProductToCart = async (productId) => {
     const data = await addToCart(productId);
+    console.log("DATA ", data);
+    console.log("CART ITEMS", cartItems);
+    console.log("PRODUCT ID", productId);
+
     const itemExists = cartItems.find((item) => item.productId === productId);
+
+    console.log("ITEM EXSITS: ", itemExists);
 
     setProducts((products) =>
       products.map((product) => {

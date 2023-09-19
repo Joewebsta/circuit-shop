@@ -145,4 +145,28 @@ describe("App", () => {
     const updatedProductListItems = await screen.findAllByRole("listitem");
     expect(updatedProductListItems).toHaveLength(1);
   });
+
+  test("adds product to cart", async () => {
+    user.setup;
+
+    const cartItemQty = screen.getByRole("cell", { name: /^2$/i });
+    expect(cartItemQty).toBeInTheDocument();
+
+    const cartTotalAmount = screen.getByRole("cell", { name: /\$599\.98/i });
+    expect(cartTotalAmount).toBeInTheDocument();
+
+    const metaQuestAddToCartButton = screen.getAllByRole("button", {
+      name: /add to cart/i,
+    })[0];
+
+    await user.click(metaQuestAddToCartButton);
+
+    const updatedCartItemQty = screen.getByRole("cell", { name: /^3$/i });
+    expect(updatedCartItemQty).toBeInTheDocument();
+
+    const updatedCartTotalAmount = screen.getByRole("cell", {
+      name: /\$899\.97/i,
+    });
+    expect(updatedCartTotalAmount).toBeInTheDocument();
+  });
 });
