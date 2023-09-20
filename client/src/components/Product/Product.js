@@ -28,7 +28,7 @@ const Product = ({
   return (
     <li className="border-b border-[#BFB9B2] p-5 first:border-t">
       <div className="flex gap-5">
-        <img src={imageUrl} width="128px" alt={`Image of ${productTitle}`} />
+        <img src={imageUrl} width="128px" alt={productTitle} />
         <div className="flex-1">
           <ProductContent
             productTitle={productTitle}

@@ -68,7 +68,7 @@ describe("App", () => {
     const newProductQuantity = await screen.findByText("10");
     expect(newProductQuantity).toBeInTheDocument();
 
-    const newProductImageUrl = await screen.getByRole("img", {
+    const newProductImageUrl = screen.getByRole("img", {
       name: /image of iphone 14/i,
     });
     expect(newProductImageUrl).toBeInTheDocument();

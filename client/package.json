@@ -7,7 +7,8 @@
     "dev": "parcel src/index.html",
     "test": "jest",
     "test:watch": "jest --watch",
-    "coverage": "jest --coverage --watchAll --collectCoverageFrom='src/components/**/*.{js,ts,tsx}' --collectCoverageFrom='!src/components/**/*.{types,stories,constants,test,spec}.{js,ts,tsx}'"
+    "coverage": "jest --coverage --watchAll --collectCoverageFrom='src/components/**/*.{js,ts,tsx}' --collectCoverageFrom='!src/components/**/*.{types,stories,constants,test,spec}.{js,ts,tsx}'",
+    "lint": "eslint --ignore-path .gitignore ."
   },
   "keywords": [],
   "author": "",
@@ -15,7 +16,6 @@
   "dependencies": {
     "@babel/preset-env": "^7.22.4",
     "@babel/preset-react": "^7.22.3",
-    "@fontsource-variable/space-grotesk": "^5.0.8",
     "@tabler/icons-react": "^2.33.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
@@ -38,9 +38,17 @@
     "@types/jest": "^29.5.4",
     "autoprefixer": "^10.4.15",
     "buffer": "^6.0.3",
+    "eslint-plugin-jest-dom": "^5.1.0",
+    "eslint-plugin-jsx-a11y": "^6.7.1",
     "jest-transform-stub": "^2.0.0",
     "msw": "^1.3.1",
     "postcss": "^8.4.28",
     "tailwindcss": "^3.3.3"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "plugin:jest-dom/recommended"
+    ]
   }
 }
